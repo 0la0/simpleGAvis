@@ -8,6 +8,8 @@ public interface IFitness {
 	
 	public void setGoal(float[] goal);
 	
+	public int[] getGoal ();
+	
 	public void calcFitness(Population p);
 	
 	public float evaluate(Population p);

@@ -47,5 +47,11 @@ public class FitnessNumOnes implements IFitness{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int[] getGoal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

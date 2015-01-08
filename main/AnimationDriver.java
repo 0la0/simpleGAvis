@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import fitness.FitnessCustomGoal;
+
 
 public class AnimationDriver {
 
@@ -31,10 +33,15 @@ public class AnimationDriver {
 	private int animationStepTime = 17;
 	private Comparator populationSort = new PopulationComparator();
 	private JFrame imgFrame = new JFrame();
+	private boolean isCustomGoal = false;
 	
 	public AnimationDriver (Options options) {
 		this.options = options;
 		this.goal = (int) Math.pow(2, this.options.geneLength);
+		
+		if (this.options.fitnessObj instanceof FitnessCustomGoal) {
+			this.isCustomGoal = true;
+		}
 		
 		this.buildAnimationFrame(500, 500);
 		this.initPopulation();
@@ -72,6 +79,12 @@ public class AnimationDriver {
 		switch (child.numGenes) {
 		case 2:
 			this.animateXY();
+			if (this.timerCnt % 300 == 0) {
+				float x = (float) Math.random();
+				float y = (float) Math.random();
+				this.options.fitnessObj.setGoal(new float[]{x, y});
+				System.out.println("Goal color set to: " + x + ", " + y);
+			}
 			break;
 		case 3:
 			//--individuals as columns--//
@@ -86,6 +99,15 @@ public class AnimationDriver {
 			break;
 		case 5:
 			this.animateRGBXY();
+			if (this.timerCnt % 500 == 0) {
+				float x = (float) Math.random();
+				float y = (float) Math.random();
+				float r = (float) Math.random();
+				float g = (float) Math.random();
+				float b = (float) Math.random();
+				this.options.fitnessObj.setGoal(new float[]{x, y, r, g, b});
+				System.out.println("Goal color set to: " + x + ", " + y + ", " + r + ", " + g + ", " + b);
+			}
 			break;
 		default:
 			System.out.println("animation driver not availabe for this number of genes");
@@ -114,7 +136,17 @@ public class AnimationDriver {
 			this.imgGraphics.fillRect(0,  0,  w,  h);
 		}
 		
-		this.imgGraphics.setPaint(new Color(255, 255, 255, 10));
+		if (this.isCustomGoal) {
+			this.imgGraphics.setColor(Color.BLACK);
+			this.imgGraphics.fillRect(0,  0,  w,  h);
+			this.imgGraphics.setPaint(new Color(100, 100, 255));
+			int[] goalPosition = this.options.fitnessObj.getGoal();
+			this.imgGraphics.fillRect(goalPosition[0] - 5, goalPosition[1] - 5, 10, 10);
+			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
+		}
+		else {
+			this.imgGraphics.setPaint(new Color(255, 255, 255, 10));
+		}
 
 		for (int i = 0; i < this.child.individuals.length; i++) {
 			float normalX = (float) (this.child.individuals[i].genome[0] / (goal * 1.0));
@@ -122,7 +154,7 @@ public class AnimationDriver {
 			
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);
-			this.imgGraphics.fillRect(x, y, 1, 1);
+			this.imgGraphics.fillRect(x - 1, y - 1, 2, 2);
 		}
 		animationPanel.setBufferedImage(this.img);
 	}
@@ -161,12 +193,23 @@ public class AnimationDriver {
 	private void animateRGBXY () {
 		int w = BinaryStringHelper.maxVal;
 		int h = BinaryStringHelper.maxVal;
+		int opacityMult = 1;
 		if (this.img == null) {
 			this.img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			this.imgGraphics = this.img.createGraphics();
 			this.imgGraphics.setColor(Color.BLACK);
 			this.imgGraphics.fillRect(0,  0,  w,  h);
 		}
+		
+		if (this.isCustomGoal) {
+			this.imgGraphics.setColor(Color.BLACK);
+			this.imgGraphics.fillRect(0,  0,  w,  h);
+			this.imgGraphics.setPaint(new Color(100, 100, 255));
+			int[] goalPosition = this.options.fitnessObj.getGoal();
+			this.imgGraphics.fillRect(goalPosition[3] - 5, goalPosition[4] - 5, 10, 10);
+			opacityMult = 20;
+		}
+		
 		for (int i = 0; i < this.child.individuals.length; i++) {		
 			float normalR = (float) (this.child.individuals[i].genome[0] / (this.goal * 1.0));
 			float normalG = (float) (this.child.individuals[i].genome[1] / (this.goal * 1.0));
@@ -180,7 +223,7 @@ public class AnimationDriver {
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);
 			
-			this.imgGraphics.setPaint(new Color(red, green, blue, 10));
+			this.imgGraphics.setPaint(new Color(red, green, blue, 10 * opacityMult));
 			this.imgGraphics.fillRect(x, y, 2, 2);
 		}
 		animationPanel.setBufferedImage(this.img);

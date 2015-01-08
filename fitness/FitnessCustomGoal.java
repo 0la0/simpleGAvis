@@ -6,12 +6,14 @@ import main.Population;
 public class FitnessCustomGoal implements IFitness{
 
 	private int[] goal;
+	//private float[] realGoal;
 	
 	public FitnessCustomGoal (int[] goal) {
 		this.setGoal(goal);
 	}
 	
 	public FitnessCustomGoal (float[] goal) {
+		//this.realGoal = goal;
 		this.setGoal(goal);
 	}
 	
@@ -65,6 +67,11 @@ public class FitnessCustomGoal implements IFitness{
 	@Override
 	public String toString () {
 		return "custom goal";
+	}
+
+	@Override
+	public int[] getGoal() {
+		return this.goal;
 	}
 
 }
