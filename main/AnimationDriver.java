@@ -204,8 +204,9 @@ public class AnimationDriver {
 		if (this.isCustomGoal) {
 			this.imgGraphics.setColor(Color.BLACK);
 			this.imgGraphics.fillRect(0,  0,  w,  h);
-			this.imgGraphics.setPaint(new Color(100, 100, 255));
 			int[] goalPosition = this.options.fitnessObj.getGoal();
+			this.imgGraphics.setPaint(new Color(
+					goalPosition[0], goalPosition[1], goalPosition[2]));
 			this.imgGraphics.fillRect(goalPosition[3] - 5, goalPosition[4] - 5, 10, 10);
 			opacityMult = 20;
 		}
