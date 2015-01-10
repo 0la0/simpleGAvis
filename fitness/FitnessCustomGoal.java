@@ -32,7 +32,7 @@ public class FitnessCustomGoal implements IFitness{
 				this.goal[i] = max;
 			}
 			else {
-				this.goal[i] = (int) Math.round(max * goal[i]);
+				this.goal[i] = (int) Math.floor(max * goal[i]);
 			}
 		}
 	}
