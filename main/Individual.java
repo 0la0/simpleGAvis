@@ -37,4 +37,14 @@ public class Individual {
 		return sum;
 	}
 	
+	@Override
+	public String toString () {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < this.genome.length; i++) {
+			sb.append("gene " + i + ": ");
+			sb.append(BinaryStringHelper.intToBinaryString(this.genome[i]));
+		}
+		return sb.toString();
+	}
+	
 }
