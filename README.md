@@ -1,8 +1,17 @@
 Simple Genetic Algorithm Visualization Tool
 =================
 
-A Java program for visualizing an implementation of the "Simple Genetic Algorithm" base on David Goldberg's work.
+A Java program for visualizing an implementation of the "Simple Genetic Algorithm."
 
 http://en.wikipedia.org/wiki/Genetic_algorithm
 
-http://en.wikipedia.org/wiki/David_E._Goldberg
+###Usage
+Compile:
+```Shell
+javac -d bin ./src/gaViz/*/*.java
+```
+
+Run:
+```Shell
+java -cp ./bin gaViz/main/Init
+```
