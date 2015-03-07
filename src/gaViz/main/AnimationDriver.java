@@ -43,6 +43,7 @@ public class AnimationDriver {
 	private int prevY = 30;	 //---location of JFrame
 	private int prevWidth = 500; //---dimension of JFrame
 	private int prevHeight = 500;//---dimension of JFrame
+	private boolean renderGoal = true;
 	
 	public AnimationDriver (Options options) {
 		this.options = options;
@@ -145,17 +146,20 @@ public class AnimationDriver {
 			this.imgGraphics.fillRect(0,  0,  w,  h);
 		}
 		
-		if (this.isCustomGoal) {
-			this.imgGraphics.setColor(Color.BLACK);
-			this.imgGraphics.fillRect(0,  0,  w,  h);
+		this.imgGraphics.setColor(Color.BLACK);
+		this.imgGraphics.fillRect(0,  0,  w,  h);
+		
+		if (this.isCustomGoal && this.renderGoal) {
 			this.imgGraphics.setPaint(new Color(100, 100, 255));
 			int[] goalPosition = this.options.fitnessObj.getGoal();
 			this.imgGraphics.fillRect(goalPosition[0] - 5, goalPosition[1] - 5, 10, 10);
 			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
 		}
+		/*
 		else {
 			this.imgGraphics.setPaint(new Color(255, 255, 255, 10));
 		}
+		*/
 
 		for (int i = 0; i < this.child.individuals.length; i++) {
 			float normalX = (float) (this.child.individuals[i].genome[0] / (goal * 1.0));
@@ -202,7 +206,7 @@ public class AnimationDriver {
 	private void animateRGBXY () {
 		int w = BinaryStringHelper.maxVal;
 		int h = BinaryStringHelper.maxVal;
-		int opacityMult = 1;
+		int opacityMult = 20;
 		if (this.img == null) {
 			this.img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			this.imgGraphics = this.img.createGraphics();
@@ -210,14 +214,17 @@ public class AnimationDriver {
 			this.imgGraphics.fillRect(0,  0,  w,  h);
 		}
 		
-		if (this.isCustomGoal) {
-			this.imgGraphics.setColor(Color.BLACK);
-			this.imgGraphics.fillRect(0,  0,  w,  h);
+		//---CLEAR BUFFERED IMAGE TO BLACK---//
+		this.imgGraphics.setColor(Color.BLACK);
+		this.imgGraphics.fillRect(0,  0,  w,  h);
+		
+		//---RENDER GOAL STATE---//
+		if (this.isCustomGoal && this.renderGoal) {
 			int[] goalPosition = this.options.fitnessObj.getGoal();
 			this.imgGraphics.setPaint(new Color(
 					goalPosition[0], goalPosition[1], goalPosition[2]));
 			this.imgGraphics.fillRect(goalPosition[3] - 5, goalPosition[4] - 5, 10, 10);
-			opacityMult = 20;
+			//opacityMult = 20;
 		}
 		
 		for (int i = 0; i < this.child.individuals.length; i++) {		
@@ -264,7 +271,10 @@ public class AnimationDriver {
 		        animationPanel.updateSize(prevWidth, prevHeight);
 		    }
 		});
-		//---JFRAME FULLSCREEN LISTENER: PRESS SPACEBAR OR ESC---//
+		//---KEY LISTENERS---//
+		//   -FULLSCREEN: SPACEBAR AND ESC
+		//   -RE-INITIALIZE POPULATION (SCATTER): S
+		//	 -TOGGLE GOAL STATE RENDERING: G
 		imgFrame.addKeyListener(new KeyListener() {
         	public void keyPressed(KeyEvent arg0) {
         		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -272,6 +282,12 @@ public class AnimationDriver {
         		}
         		else if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
         			toggleFullscreen();
+        		}
+        		else if (arg0.getKeyCode() == KeyEvent.VK_S) {
+        			initPopulation();
+        		}
+        		else if (arg0.getKeyCode() == KeyEvent.VK_G) {
+        			renderGoal = !renderGoal;
         		}
     		}
     		@Override
