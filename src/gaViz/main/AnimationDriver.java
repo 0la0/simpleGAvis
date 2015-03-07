@@ -6,11 +6,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.logging.Level;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,6 +38,11 @@ public class AnimationDriver {
 	private Comparator populationSort = new PopulationComparator();
 	private JFrame imgFrame = new JFrame();
 	private boolean isCustomGoal = false;
+	private boolean isFullscreen = false;
+	private int prevX = 200; //---location of JFrame
+	private int prevY = 30;	 //---location of JFrame
+	private int prevWidth = 500; //---dimension of JFrame
+	private int prevHeight = 500;//---dimension of JFrame
 	
 	public AnimationDriver (Options options) {
 		this.options = options;
@@ -244,8 +253,32 @@ public class AnimationDriver {
 	    });
 		imgFrame.setSize(w, h);
 		imgFrame.pack();
-		imgFrame.setLocation(200, 30);
+		imgFrame.setLocation(prevX, prevY);
 		imgFrame.setVisible(true);
+		
+		//---JFRAME RESIZE LISTENER---//
+		imgFrame.addComponentListener(new ComponentAdapter () {
+			public void componentResized(ComponentEvent e) {
+		    	prevWidth = imgFrame.getContentPane().getSize().width;;
+		        prevHeight = imgFrame.getContentPane().getSize().height;
+		        animationPanel.updateSize(prevWidth, prevHeight);
+		    }
+		});
+		//---JFRAME FULLSCREEN LISTENER: PRESS SPACEBAR OR ESC---//
+		imgFrame.addKeyListener(new KeyListener() {
+        	public void keyPressed(KeyEvent arg0) {
+        		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        			toggleFullscreen();
+        		}
+        		else if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+        			toggleFullscreen();
+        		}
+    		}
+    		@Override
+    		public void keyReleased(KeyEvent arg0) {}
+    		@Override
+    		public void keyTyped(KeyEvent arg0) {}
+        });
 	}
 	
 	private class AnimationPanel extends JPanel {
@@ -265,6 +298,12 @@ public class AnimationDriver {
 			this.img = img;
 		}
 		
+		//---JPanel already has setSize and resize method names---//
+		public void updateSize (int w, int h) {
+			this.w = w;
+			this.h = h;
+		}
+		
 		public void setBufferedImage (BufferedImage img) {
 			this.img = img;
 			this.repaint();
@@ -273,7 +312,29 @@ public class AnimationDriver {
 		protected void paintComponent (Graphics g) {
 			g.drawImage(this.img, 0, 0, w, h, null);
 		}
-		
+	}
+	
+	private void toggleFullscreen(){
+		if (!isFullscreen) {
+			prevX = imgFrame.getX();
+			prevY = imgFrame.getY();
+			imgFrame.dispose(); 
+			imgFrame.setUndecorated(true);
+			imgFrame.setBounds(0, 0, imgFrame.getToolkit().getScreenSize().width, imgFrame.getToolkit().getScreenSize().height);
+			imgFrame.setVisible(true);
+        	isFullscreen = true;
+        	animationPanel.updateSize(imgFrame.getToolkit().getScreenSize().width, imgFrame.getToolkit().getScreenSize().height);
+		} else {
+			prevWidth = 500;
+			prevHeight = 500;
+			imgFrame.setVisible(true);
+			imgFrame.setBounds(prevX, prevY, prevWidth, prevHeight);
+			imgFrame.dispose();
+			imgFrame.setUndecorated(false);
+			imgFrame.setVisible(true);
+			isFullscreen = false;
+			animationPanel.updateSize(prevWidth, prevHeight);
+       }
 	}
 	
 }
