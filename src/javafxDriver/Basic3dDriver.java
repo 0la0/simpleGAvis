@@ -68,7 +68,7 @@ public class Basic3dDriver {
 		//---UI SETUP---//
 		root.getChildren().add(world);
 		this.buildCamera();
-		this.buildBoundries();
+		//this.buildBoundries();
 		
 		this.scene = new SubScene(root, 900, 675, true, SceneAntialiasing.BALANCED);
 		this.scene.setFill(Color.color(0.85, 0.85, 1.0));
@@ -82,7 +82,7 @@ public class Basic3dDriver {
 				float elapsedTime = (float) ((now - lastTime) / 1000000.0);
 				lastTime = now;
 				generate(elapsedTime);
-				
+				animateCamera(elapsedTime);
 			}
 		};
 		timer.start();
@@ -92,6 +92,11 @@ public class Basic3dDriver {
 		parent = new Population(this.options.populationSize, this.options.numGenes, this.goal);
 		this.options.fitnessObj.calcFitness(parent);
 		this.options.probabilityObj.calc(parent);
+	}
+	
+	private void animateCamera (float elapsedTime) {
+		cameraXform.ry.setAngle(cameraXform.ry.getAngle() + elapsedTime * 0.01);
+		cameraXform.rx.setAngle(cameraXform.rx.getAngle() + elapsedTime * 0.01);  
 	}
 	
 	private void generate (float elapsedTime) {
@@ -122,14 +127,18 @@ public class Basic3dDriver {
 			double normalScaleX = this.child.individuals[i].genome[6] / (this.goal * 1.0);
 			double normalScaleY = this.child.individuals[i].genome[7] / (this.goal * 1.0);
 			double normalScaleZ = this.child.individuals[i].genome[8] / (this.goal * 1.0);
+			//double rx = this.child.individuals[i].genome[9] / (this.goal * 1.0);
+			//double ry = this.child.individuals[i].genome[9] / (this.goal * 1.0);
+			//double rz = this.child.individuals[i].genome[9] / (this.goal * 1.0);
 			
-			int x = (int) Math.floor(500 * normalX);
-			int y = (int) Math.floor(500 * normalY);
-			int z = (int) Math.floor(500 * normalZ);
+			int x = (int) Math.floor(1000 * (normalX - 0.5));
+			int y = (int) Math.floor(1000 * (normalY - 0.5));
+			int z = (int) Math.floor(1000 * (normalZ - 0.5));
 			
 			cube.translate(x, y, z);
 			cube.setColor(normalR, normalG, normalB);
 			cube.setScale(normalScaleX * this.sizeMult, normalScaleY * this.sizeMult, normalScaleZ * this.sizeMult);
+			//cube.setRotate(rx * 360, ry * 360, rz * 360);
 		}
 		
 		//---------------RESET GOAL-----------------//
@@ -143,13 +152,18 @@ public class Basic3dDriver {
 			float scaleX = (float) (Math.random());
 			float scaleY = (float) (Math.random());
 			float scaleZ = (float) (Math.random());
+			//float rx = (float) (Math.random());
+			//float ry = (float) (Math.random());
+			//float rz = (float) (Math.random());
+			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
 			this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
 			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b});
 			//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
 		
-			this.goalCube.translate(x * 500, y * 500, z * 500);
+			this.goalCube.translate((x - 0.5) * 1000, (y - 0.5) * 1000, (z - 0.5) * 1000);
 			this.goalCube.setColor(r, g, b);
 			this.goalCube.setScale(scaleX * this.sizeMult, scaleY * this.sizeMult, scaleZ * this.sizeMult);
+			//this.goalCube.setRotate(rx * 360, ry * 360, rz * 360);
 		}
 		
 		//---SCATTER: RANDOM RESTART---//
@@ -180,11 +194,16 @@ public class Basic3dDriver {
 		float scaleX = (float) (Math.random());
 		float scaleY = (float) (Math.random());
 		float scaleZ = (float) (Math.random());
+		float rx = (float) (Math.random());
+		float ry = (float) (Math.random());
+		float rz = (float) (Math.random());
+		//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
 		this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
 		
 		this.goalCube = new Cube(60, 60, 60);
 		this.goalCube.translate(x * 500, y * 500, z * 500);
 		this.goalCube.setColor(r, g, b);
+		this.goalCube.setRotate(rx, ry, rz);
 		
 		//this.boundryGroup.getChildren().add(this.goalCube.getBox());
 	}
