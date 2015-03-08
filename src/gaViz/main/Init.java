@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -237,18 +238,27 @@ public class Init {
 				for (int i = 0; i < geneGoals.length; i++) {
 					geneGoals[i] = Float.parseFloat(geneFields[i].getText());
 				}
-				buildOptions(
-						buttonListener.getSelected(), 
-						Integer.parseInt(numGenes.getText()), 
-						Integer.parseInt(geneLength.getText()),
-						Integer.parseInt(populationSize.getText()),
-						Integer.parseInt(numGenerations.getText()),
-						Float.parseFloat(mutateThresh.getText()),
-						crossover.getSelectedItem().toString(),
-						fitnessButtonListener.getSelected(),
-						geneGoals,
-						printButtonListener.getSelected()
-				);
+				try {
+					buildOptions(
+							buttonListener.getSelected(), 
+							Integer.parseInt(numGenes.getText()), 
+							Integer.parseInt(geneLength.getText()),
+							NumberFormat.getNumberInstance(java.util.Locale.US)
+								.parse(populationSize.getText()).intValue(),
+							Integer.parseInt(numGenerations.getText()),
+							Float.parseFloat(mutateThresh.getText()),
+							crossover.getSelectedItem().toString(),
+							fitnessButtonListener.getSelected(),
+							geneGoals,
+							printButtonListener.getSelected()
+					);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		this.mainPanel.add(goButton);
