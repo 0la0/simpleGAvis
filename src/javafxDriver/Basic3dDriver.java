@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.SceneAntialiasing;
+import javafx.stage.Screen;
 
 
 public class Basic3dDriver {
@@ -52,7 +53,8 @@ public class Basic3dDriver {
 	private long lastTime;
 	private boolean isFrameSkip = false;
 	private int sizeMult = 4;
-	
+	private int width = 900;
+	private int height = 675;
 	
 	public Basic3dDriver (Options options) {
 		this.options = options;
@@ -70,8 +72,9 @@ public class Basic3dDriver {
 		this.buildCamera();
 		//this.buildBoundries();
 		
-		this.scene = new SubScene(root, 900, 675, true, SceneAntialiasing.BALANCED);
-		this.scene.setFill(Color.color(0.85, 0.85, 1.0));
+		this.scene = new SubScene(root, width, height, true, SceneAntialiasing.BALANCED);
+		//this.scene.setFill(Color.color(0.85, 0.85, 1.0));
+		this.scene.setFill(Color.color(0, 0, 0));
 		this.scene.setCamera(camera);
 		this.handleMouse();
 			
@@ -278,6 +281,19 @@ public class Basic3dDriver {
 	
 	public String toString () {
 		return "basic3D";
+	}
+	
+	public void setFullscreen (boolean isFullscreen, double w, double h) {
+		if (isFullscreen) {
+			//this.scene.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+			//this.scene.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+			this.scene.setWidth(w);
+			this.scene.setHeight(h);
+		}
+		else {
+			this.scene.setWidth(width);
+			this.scene.setHeight(height);
+		}
 	}
 	
 	/*

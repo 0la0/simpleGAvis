@@ -16,13 +16,15 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Init extends Application {
 	
-	private BorderPane mainGraphicsPane = new BorderPane();
+	private VBox mainGraphicsPane = new VBox();
 	private Basic3dDriver driverThree = null;
-	
+	private boolean isFullscreen = false;
+			
 	@Override
 	public void start (Stage stage) {
 		Group root = new Group();
@@ -43,14 +45,22 @@ public class Init extends Application {
 		options.fitnessObj = new FitnessCustomGoal(initialGoalState);
 		
 		driverThree = new Basic3dDriver(options);
-		mainGraphicsPane.setCenter(driverThree.getUiNode());
+		mainGraphicsPane.getChildren().add(driverThree.getUiNode());
+		//mainGraphicsPane.add(driverThree.getUiNode());
 		
 		scene.setRoot(this.mainGraphicsPane);
+		
 		stage.show();
 		
 		scene.setOnKeyPressed((KeyEvent e) -> {
 			if (e.getCode() == KeyCode.S)
 				driverThree.initPopulation();
+			else if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ESCAPE) {
+				isFullscreen = !isFullscreen;
+				stage.setFullScreen(isFullscreen);
+				
+				driverThree.setFullscreen(isFullscreen, stage.getWidth(), stage.getHeight());
+			}	
 		});
 	}
 
