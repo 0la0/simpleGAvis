@@ -42,7 +42,7 @@ public class Population {
 				return this.individuals[i];
 			}
 		}
-		return null;
+		return this.individuals[this.individuals.length - 1];
 	}
 	
 	public void sort (Comparator compare) {
