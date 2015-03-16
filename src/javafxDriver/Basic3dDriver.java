@@ -28,7 +28,7 @@ public class Basic3dDriver {
 	private Xform cameraXform = new Xform();
 	private Xform cameraXform2 = new Xform();
 	private Xform cameraXform3 = new Xform();
-	private double cameraDistance = 2500;
+	private double cameraDistance = 1500; //2500
 
 	private Xform particleGroup = new Xform();
 	private ArrayList<Cube> particles = new ArrayList<Cube>();
@@ -55,6 +55,8 @@ public class Basic3dDriver {
 	private int sizeMult = 4;
 	private int width = 900;
 	private int height = 675;
+	private double totTime = 0;
+	private int cnt = 0;
 	
 	public Basic3dDriver (Options options) {
 		this.options = options;
@@ -84,22 +86,33 @@ public class Basic3dDriver {
 			public void handle(long now) {
 				float elapsedTime = (float) ((now - lastTime) / 1000000.0);
 				lastTime = now;
-				generate(elapsedTime);
+				if (cnt++ % 2 == 0)
+					generate(elapsedTime);
 				animateCamera(elapsedTime);
+				/*
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				*/
 			}
 		};
 		timer.start();
 	}
 	
 	public void initPopulation () {
-		parent = new Population(this.options.populationSize, this.options.numGenes, this.goal);
+		this.parent = new Population(this.options.populationSize, this.options.numGenes, this.goal);
 		this.options.fitnessObj.calcFitness(parent);
 		this.options.probabilityObj.calc(parent);
 	}
 	
 	private void animateCamera (float elapsedTime) {
-		cameraXform.ry.setAngle(cameraXform.ry.getAngle() + elapsedTime * 0.01);
-		cameraXform.rx.setAngle(cameraXform.rx.getAngle() + elapsedTime * 0.01);  
+		//this.totTime += elapsedTime * 0.0001;
+		//this.cameraDistance = 1500 + (2000 * Math.sin(this.totTime));
+		//this.camera.setTranslateZ(-this.cameraDistance);
+		this.cameraXform.ry.setAngle(cameraXform.ry.getAngle() + elapsedTime * 0.01);
+		this.cameraXform.rx.setAngle(cameraXform.rx.getAngle() + elapsedTime * 0.01);  
 	}
 	
 	private void generate (float elapsedTime) {
