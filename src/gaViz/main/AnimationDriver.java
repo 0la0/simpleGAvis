@@ -14,7 +14,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
-import java.util.logging.Level;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -72,7 +71,13 @@ public class AnimationDriver {
 		this.options.probabilityObj.calc(parent);
 	}
 	
-	
+	private void createNewGoal () {
+		float[] nGoal = new float[this.child.numGenes];
+		for (int i = 0; i < nGoal.length; i++) {
+			nGoal[i] = (float) Math.random();
+		}
+		this.options.fitnessObj.setGoal(nGoal);
+	}
 	
 	private void generate () {
 		//long startTime = System.nanoTime();
@@ -89,47 +94,22 @@ public class AnimationDriver {
 		switch (child.numGenes) {
 		case 2:
 			this.animateXY();
-			if (this.timerCnt % 300 == 0) {
-				float x = (float) Math.random();
-				float y = (float) Math.random();
-				this.options.fitnessObj.setGoal(new float[]{x, y});
-				System.out.println("Goal color set to: " + x + ", " + y);
-			}
 			break;
 		case 3:
-			//--individuals as columns--//
 			this.animateRGBcolumns();
-			if (this.timerCnt % 500 == 0) {
-				float r = (float) Math.random();
-				float g = (float) Math.random();
-				float b = (float) Math.random();
-				this.options.fitnessObj.setGoal(new float[]{r, g, b});
-				System.out.println("Goal color set to: " + r + ", " + g + ", " + b);
-			}
 			break;
 		case 5:
 			this.animateRGBXY();
-			if (this.timerCnt % 500 == 0) {
-				float x = (float) Math.random();
-				float y = (float) Math.random();
-				float r = (float) Math.random();
-				float g = (float) Math.random();
-				float b = (float) Math.random();
-				this.options.fitnessObj.setGoal(new float[]{x, y, r, g, b});
-				System.out.println("Goal color set to: " + x + ", " + y + ", " + r + ", " + g + ", " + b);
-			}
 			break;
 		default:
 			System.out.println("animation driver not availabe for this number of genes");
 			imgFrame.dispose();
 			try {
 				this.timer.stop();
-			} catch (NullPointerException e) {
-				
-			}
-			
+			} catch (NullPointerException e) {}
 		}
-		this.timerCnt++;
+		
+		if (this.timerCnt++ % 400 == 0) this.createNewGoal();
 		//System.out.println("Total iteration time: " + ((System.nanoTime() - startTime) / 1000000.0) );
 	}
 	
@@ -288,6 +268,9 @@ public class AnimationDriver {
         		}
         		else if (arg0.getKeyCode() == KeyEvent.VK_G) {
         			renderGoal = !renderGoal;
+        		}
+        		else if (arg0.getKeyCode() == KeyEvent.VK_N) {
+        			createNewGoal();
         		}
     		}
     		@Override
