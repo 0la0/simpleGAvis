@@ -15,14 +15,14 @@ public class FitnessSquared implements IFitness{
 	 * "simple GA example"
 	 */
 	public void calcFitness(Population p) {
-		p.totalFitness = 0;
-		for (int i = 0; i < p.size; i++) {
+		p.setTotalFitness(0);
+		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
-			for (int j = 0; j < p.individuals[i].numGenes; j++) {
-				fitness += Math.pow(p.individuals[i].genome[j], 2);
+			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
+				fitness += Math.pow(p.getIndividual(i).genome[j], 2);
 			}
-			p.individuals[i].rawFitness = fitness;
-			p.totalFitness += fitness;
+			p.getIndividual(i).rawFitness = fitness;
+			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}
 

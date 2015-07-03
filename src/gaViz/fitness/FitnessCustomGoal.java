@@ -1,6 +1,9 @@
 package gaViz.fitness;
 
+import java.util.Arrays;
+
 import gaViz.main.BinaryStringHelper;
+import gaViz.main.Individual;
 import gaViz.main.Population;
 
 public class FitnessCustomGoal implements IFitness{
@@ -42,19 +45,19 @@ public class FitnessCustomGoal implements IFitness{
 	 */
 	@Override
 	public void calcFitness (Population p) {
-		if (this.goal.length != p.numGenes) {
+		if (this.goal.length != p.getNumGenes()) {
 			System.out.println("fitness goal != number of genes => fatal error");
 			System.exit(0);
 		}
-		p.totalFitness = 0;
+		p.setTotalFitness(0);
 		int maxVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
-		for (int i = 0; i < p.size; i++) {
+		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
-			for (int j = 0; j < p.individuals[i].numGenes; j++) {
-				fitness += (maxVal - Math.pow(p.individuals[i].genome[j] - this.goal[j], 2));
+			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
+				fitness += (maxVal - Math.pow(p.getIndividual(i).genome[j] - this.goal[j], 2));
 			}
-			p.individuals[i].rawFitness = fitness;
-			p.totalFitness += fitness;
+			p.getIndividual(i).rawFitness = fitness;
+			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}
 
@@ -73,5 +76,24 @@ public class FitnessCustomGoal implements IFitness{
 	public int[] getGoal() {
 		return this.goal;
 	}
-
+	
+	public double getGeneFitness (Population p, int geneIndex) {
+		if (geneIndex < 0 || geneIndex >= p.getNumGenes()) {
+			return -1;
+		}
+		p.setTotalFitness(0);
+		
+		int maxGeneVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
+		int maxPopVal = maxGeneVal * p.getSize();
+		
+		double fitnessSum = Arrays.stream(p.getIndividuals())
+				.mapToDouble(individual -> {
+					return  maxGeneVal - Math.pow(individual.genome[geneIndex] - this.goal[geneIndex], 2);
+				})
+				.sum();
+		
+		double fitnessVal = (fitnessSum) / (maxPopVal * 1.0);
+		return fitnessVal;
+	}
+	
 }

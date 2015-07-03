@@ -9,10 +9,10 @@ public class CrossoverOverall implements ICrossover{
 	//perform one crossover across all genes
 	public void crossover(Population p) {
 		int geneLength = BinaryStringHelper.geneLength;
-		int numGenes = p.numGenes;
-		for (int i = 0; i < p.size; i += 2) {
-			Individual parent1 = p.individuals[i + 0];
-			Individual parent2 = p.individuals[i + 1];
+		int numGenes = p.getNumGenes();
+		for (int i = 0; i < p.getSize(); i += 2) {
+			Individual parent1 = p.getIndividual(i + 0);
+			Individual parent2 = p.getIndividual(i + 1);
 			Individual child1 = new Individual(numGenes);
 			Individual child2 = new Individual(numGenes);
 			String parentString1 = "";
@@ -33,8 +33,8 @@ public class CrossoverOverall implements ICrossover{
 				child2.genome[j] = BinaryStringHelper.binaryStringToInt(c2.substring(j * geneLength, (j * geneLength) + geneLength));
 			}
 			
-			p.individuals[i + 0] = child1;
-			p.individuals[i + 1] = child2;
+			p.setIndividual(i + 0, child1);
+			p.setIndividual(i + 1, child2);
 		}
 	}
 

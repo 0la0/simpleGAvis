@@ -15,11 +15,11 @@ public class FitnessNumOnes implements IFitness{
 	 * in the binary string of the integer
 	 */
 	public void calcFitness (Population p) {
-		p.totalFitness = 0;
-		for (int i = 0; i < p.size; i++) {
+		p.setTotalFitness(0);
+		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
-			for (int j = 0; j < p.individuals[i].numGenes; j++) {
-				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.individuals[i].genome[j]).toCharArray();
+			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
+				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.getIndividual(i).genome[j]).toCharArray();
 				for (int k = 0; k < binaryGene.length; k++) {
 					if (binaryGene[k] == '1') {
 						fitness++;
@@ -27,8 +27,8 @@ public class FitnessNumOnes implements IFitness{
 				}
 			}
 			fitness = (int) Math.pow(fitness, 2);
-			p.individuals[i].rawFitness = fitness;
-			p.totalFitness += fitness;
+			p.getIndividual(i).rawFitness = fitness;
+			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}
 	

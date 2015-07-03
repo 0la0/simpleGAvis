@@ -6,10 +6,10 @@ import java.util.Comparator;
 
 public class Population {
 	
-	public int numGenes;
-	public int size;
-	public Individual[] individuals;
-	public int totalFitness = 0;
+	private int numGenes;
+	private int size;
+	private Individual[] individuals;
+	private int totalFitness = 0;
 	
 	public Population (int size, int numGenes) {
 		this.size = size;
@@ -24,6 +24,51 @@ public class Population {
 		for (int i = 0; i < this.size; i++) {
 			individuals[i] = new Individual(numGenes, maxSize);
 		}
+	}
+
+
+	//private int numGenes;
+	public int getNumGenes () {
+		return this.numGenes;
+	}
+	
+	//private int size;
+	public int getSize () {
+		return this.size;
+	}
+	
+	public Individual[] getIndividuals () {
+		return this.individuals;
+	}
+	
+	public Individual getIndividual (int index) {
+		if (index < 0 || index >= this.size) return null;
+		return this.individuals[index];
+	}
+	
+	public void setIndividual (int index, Individual individual) {
+		if (individual == null) {
+			System.out.println("Population.setIndividual error: cannot set null value");
+			return;
+		}
+		if (index < 0 || index >= this.individuals.length) {
+			System.out.println("Population.setIndividual error: indexOutOfBounds");
+			return;
+		}
+		this.individuals[index] = individual;
+	}
+	
+	public void setIndividuals (Individual[] individuals) {
+		this.individuals = individuals;
+		this.size = individuals.length;
+	}
+	
+	public int getTotalFitness () {
+		return this.totalFitness;
+	}
+	
+	public void setTotalFitness (int totalFitness) {
+		this.totalFitness = totalFitness;
 	}
 	
 	public void addIndividual (int index, Individual individual) {
@@ -46,11 +91,6 @@ public class Population {
 	}
 	
 	public void sort (Comparator compare) {
-		/*
-		for (int i = 0; i < this.numGenes; i++) {
-			Arrays.sort(this.individuals, new PopulationComparator());
-		}
-		*/
 		Arrays.sort(this.individuals, compare);
 	}
 	

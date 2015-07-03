@@ -131,21 +131,21 @@ public class Basic3dDriver {
 		//------------------------------------------//
 		
 		
-		for (int i = 0; i < this.child.size; i++) {
+		for (int i = 0; i < this.child.getSize(); i++) {
 			Cube cube = particles.get(i);
 			
-			double normalX = this.child.individuals[i].genome[0] / (this.goal * 1.0);
-			double normalY = this.child.individuals[i].genome[1] / (this.goal * 1.0);
-			double normalZ = this.child.individuals[i].genome[2] / (this.goal * 1.0);
-			double normalR = this.child.individuals[i].genome[3] / (this.goal * 1.0);
-			double normalG = this.child.individuals[i].genome[4] / (this.goal * 1.0);
-			double normalB = this.child.individuals[i].genome[5] / (this.goal * 1.0);
-			double normalScaleX = this.child.individuals[i].genome[6] / (this.goal * 1.0);
-			double normalScaleY = this.child.individuals[i].genome[7] / (this.goal * 1.0);
-			double normalScaleZ = this.child.individuals[i].genome[8] / (this.goal * 1.0);
-			//double rx = this.child.individuals[i].genome[9] / (this.goal * 1.0);
-			//double ry = this.child.individuals[i].genome[9] / (this.goal * 1.0);
-			//double rz = this.child.individuals[i].genome[9] / (this.goal * 1.0);
+			double normalX = this.child.getIndividual(i).genome[0] / (this.goal * 1.0);
+			double normalY = this.child.getIndividual(i).genome[1] / (this.goal * 1.0);
+			double normalZ = this.child.getIndividual(i).genome[2] / (this.goal * 1.0);
+			double normalR = this.child.getIndividual(i).genome[3] / (this.goal * 1.0);
+			double normalG = this.child.getIndividual(i).genome[4] / (this.goal * 1.0);
+			double normalB = this.child.getIndividual(i).genome[5] / (this.goal * 1.0);
+			double normalScaleX = this.child.getIndividual(i).genome[6] / (this.goal * 1.0);
+			double normalScaleY = this.child.getIndividual(i).genome[7] / (this.goal * 1.0);
+			double normalScaleZ = this.child.getIndividual(i).genome[8] / (this.goal * 1.0);
+			//double rx = this.child.getIndividual(i).genome[9] / (this.goal * 1.0);
+			//double ry = this.child.getIndividual(i).genome[9] / (this.goal * 1.0);
+			//double rz = this.child.getIndividual(i).genome[9] / (this.goal * 1.0);
 			
 			int x = (int) Math.floor(1000 * (normalX - 0.5));
 			int y = (int) Math.floor(1000 * (normalY - 0.5));
@@ -263,7 +263,7 @@ public class Basic3dDriver {
 	}
 
 	private void buildParticles () {
-		for (Individual individual : parent.individuals) {
+		for (Individual individual : parent.getIndividuals()) {
 			Color color = new Color(0.6, 0.2, 0.1, 1);
 			Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
 			

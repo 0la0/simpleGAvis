@@ -13,10 +13,10 @@ public class MutateStandard implements IMutate{
 	}
 	
 	public void mutate (Population p) {
-		for (int i = 0; i < p.size; i++) {
-			Individual nonMutatedInd = p.individuals[i];
-			Individual mutatedInd = new Individual(p.numGenes);
-			for (int j = 0; j < p.numGenes; j++) {
+		for (int i = 0; i < p.getSize(); i++) {
+			Individual nonMutatedInd = p.getIndividual(i);
+			Individual mutatedInd = new Individual(p.getNumGenes());
+			for (int j = 0; j < p.getNumGenes(); j++) {
 				char[] paramArr = BinaryStringHelper.intToBinaryString(nonMutatedInd.genome[j]).toCharArray();
 				for (int k = 0; k < paramArr.length; k++) {
 					if (Math.random() < this.mutateThreshold) {
@@ -30,7 +30,7 @@ public class MutateStandard implements IMutate{
 				}
 				mutatedInd.genome[j] = BinaryStringHelper.binaryStringToInt(new String(paramArr));
 			}
-			p.individuals[i] = mutatedInd;
+			p.setIndividual(i, mutatedInd);
 		}
 	}
 

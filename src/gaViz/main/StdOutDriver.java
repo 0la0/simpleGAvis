@@ -41,7 +41,7 @@ public class StdOutDriver {
 			child = this.options.breederObj.breed(parent);
 			this.options.crossoverObj.crossover(child);
 			this.options.fitnessObj.calcFitness(child);
-			this.textArea.append("\npopulation fitness pre mutate: " + child.totalFitness);
+			this.textArea.append("\npopulation fitness pre mutate: " + child.getTotalFitness() );
 			this.options.mutateObj.mutate(child);
 			this.options.fitnessObj.calcFitness(child);
 			this.options.probabilityObj.calc(child);

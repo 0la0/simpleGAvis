@@ -98,8 +98,8 @@ public class StaticImageDriver {
 	    
 		for (int i = 0; i < this.generations.size(); i++) {
 			Population p = this.generations.get(i);
-			for (int j = 0; j < p.size; j++) {
-				float normalVal = (float) (p.individuals[j].genome[0] / (this.goal * 1.0));
+			for (int j = 0; j < p.getSize(); j++) {
+				float normalVal = (float) (p.getIndividual(j).genome[0] / (this.goal * 1.0));
 				int val = (int) Math.floor(255 * normalVal);
 				g.setColor(new Color(val, val, val));
 				g.fillRect(j, i, 1, 1);
@@ -119,10 +119,10 @@ public class StaticImageDriver {
 	    
 		for (int i = 0; i < this.generations.size(); i++) {
 			Population p = this.generations.get(i);
-			for (int j = 0; j < p.size; j++) {
-				float normalR = (float) (p.individuals[j].genome[0] / (this.goal * 1.0));
-				float normalG = (float) (p.individuals[j].genome[1] / (this.goal * 1.0));
-				float normalB = (float) (p.individuals[j].genome[2] / (this.goal * 1.0));
+			for (int j = 0; j < p.getSize(); j++) {
+				float normalR = (float) (p.getIndividual(j).genome[0] / (this.goal * 1.0));
+				float normalG = (float) (p.getIndividual(j).genome[1] / (this.goal * 1.0));
+				float normalB = (float) (p.getIndividual(j).genome[2] / (this.goal * 1.0));
 				int red = (int) Math.floor(255 * normalR);
 				int green = (int) Math.floor(255 * normalG);
 				int blue = (int) Math.floor(255 * normalB);
@@ -143,9 +143,9 @@ public class StaticImageDriver {
 	    g.setPaint(new Color(255, 255, 255, 100));
 		for (int i = 0; i < this.generations.size(); i++) {
 			Population p = this.generations.get(i);
-			for (int j = 0; j < p.size; j++) {
-				float normalX = (float) (p.individuals[j].genome[0] / (this.goal * 1.0));
-				float normalY = (float) (p.individuals[j].genome[1] / (this.goal * 1.0));
+			for (int j = 0; j < p.getSize(); j++) {
+				float normalX = (float) (p.getIndividual(j).genome[0] / (this.goal * 1.0));
+				float normalY = (float) (p.getIndividual(j).genome[1] / (this.goal * 1.0));
 				int x = (int) Math.floor(w * normalX);
 				int y = (int) Math.floor(h * normalY);
 				g.fillRect(x, y, 1, 1);
@@ -166,12 +166,12 @@ public class StaticImageDriver {
 		g.fillRect(0,  0,  w,  h);
 		for (int i = 0; i < this.generations.size(); i++) {
 			Population p = this.generations.get(i);
-			for (int j = 0; j < p.size; j++) {
-				float normalR = (float) (p.individuals[j].genome[0] / (this.goal * 1.0));
-				float normalG = (float) (p.individuals[j].genome[1] / (this.goal * 1.0));
-				float normalB = (float) (p.individuals[j].genome[2] / (this.goal * 1.0));
-				float normalX = (float) (p.individuals[j].genome[3] / (this.goal * 1.0));
-				float normalY = (float) (p.individuals[j].genome[4] / (this.goal * 1.0));
+			for (int j = 0; j < p.getSize(); j++) {
+				float normalR = (float) (p.getIndividual(j).genome[0] / (this.goal * 1.0));
+				float normalG = (float) (p.getIndividual(j).genome[1] / (this.goal * 1.0));
+				float normalB = (float) (p.getIndividual(j).genome[2] / (this.goal * 1.0));
+				float normalX = (float) (p.getIndividual(j).genome[3] / (this.goal * 1.0));
+				float normalY = (float) (p.getIndividual(j).genome[4] / (this.goal * 1.0));
 				int red = (int) Math.floor(255 * normalR);
 				int green = (int) Math.floor(255 * normalG);
 				int blue = (int) Math.floor(255 * normalB);

@@ -41,19 +41,19 @@ public class FitnessSequence implements IFitness {
 	 *  SQUARE SUM
 	 */
 	public void calcFitness(Population p) {
-		p.totalFitness = 0;
+		p.setTotalFitness(0);
 		//for each individual in the population
-		for (int i = 0; i < p.size; i++) {
+		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
 			//for each gene in an individual's genome
-			for (int j = 0; j < p.individuals[i].numGenes; j++) {
+			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
 				int compareScore = this.compareStrings(
-						BinaryStringHelper.intToBinaryString(p.individuals[i].genome[j]).toCharArray(),
+						BinaryStringHelper.intToBinaryString(p.getIndividual(i).genome[j]).toCharArray(),
 						this.binaryGoal[j].toCharArray());
 				fitness += (int) Math.pow(compareScore, 2);
 			}
-			p.individuals[i].rawFitness = fitness;
-			p.totalFitness += fitness;
+			p.getIndividual(i).rawFitness = fitness;
+			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}
 	

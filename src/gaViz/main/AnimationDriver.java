@@ -72,11 +72,12 @@ public class AnimationDriver {
 	}
 	
 	private void createNewGoal () {
-		float[] nGoal = new float[this.child.numGenes];
+		float[] nGoal = new float[this.child.getNumGenes()];
 		for (int i = 0; i < nGoal.length; i++) {
 			nGoal[i] = (float) Math.random();
 		}
 		this.options.fitnessObj.setGoal(nGoal);
+		System.out.println("set new goal");
 	}
 	
 	private void generate () {
@@ -91,7 +92,7 @@ public class AnimationDriver {
 		parent = child;	
 		//------------------------------------------//
 		
-		switch (child.numGenes) {
+		switch (child.getNumGenes()) {
 		case 2:
 			this.animateXY();
 			break;
@@ -141,9 +142,9 @@ public class AnimationDriver {
 		}
 		*/
 
-		for (int i = 0; i < this.child.individuals.length; i++) {
-			float normalX = (float) (this.child.individuals[i].genome[0] / (goal * 1.0));
-			float normalY = (float) (this.child.individuals[i].genome[1] / (goal * 1.0));
+		for (int i = 0; i < this.child.getIndividuals().length; i++) {
+			float normalX = (float) (this.child.getIndividual(i).genome[0] / (goal * 1.0));
+			float normalY = (float) (this.child.getIndividual(i).genome[1] / (goal * 1.0));
 			
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);
@@ -158,24 +159,24 @@ public class AnimationDriver {
 	private void animateRGBcolumns () {
 		
 		if (this.img == null) {
-			int w = (int) (child.size * 2);
+			int w = (int) (child.getSize() * 2);
 			int h = 1;
 			this.img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			this.imgGraphics = this.img.createGraphics();
 		}
 		
 		this.child.sort(this.populationSort);
-		for (int i = 0; i < this.child.individuals.length; i++) {
-			float normalR = (float) (this.child.individuals[i].genome[0] / (this.goal * 1.0));
-			float normalG = (float) (this.child.individuals[i].genome[1] / (this.goal * 1.0));
-			float normalB = (float) (this.child.individuals[i].genome[2] / (this.goal * 1.0));
+		for (int i = 0; i < this.child.getIndividuals().length; i++) {
+			float normalR = (float) (this.child.getIndividual(i).genome[0] / (this.goal * 1.0));
+			float normalG = (float) (this.child.getIndividual(i).genome[1] / (this.goal * 1.0));
+			float normalB = (float) (this.child.getIndividual(i).genome[2] / (this.goal * 1.0));
 			int red = (int) Math.floor(255 * normalR);
 			int green = (int) Math.floor(255 * normalG);
 			int blue = (int) Math.floor(255 * normalB);
 			this.imgGraphics.setColor(new Color(red, green, blue));
 
-			this.imgGraphics.fillRect(i + this.child.size, 0, 1, 1);
-			this.imgGraphics.fillRect(this.child.size - i, 0, 1, 1);
+			this.imgGraphics.fillRect(i + this.child.getSize(), 0, 1, 1);
+			this.imgGraphics.fillRect(this.child.getSize() - i, 0, 1, 1);
 		}
 		animationPanel.setBufferedImage(this.img);
 	}
@@ -207,12 +208,12 @@ public class AnimationDriver {
 			//opacityMult = 20;
 		}
 		
-		for (int i = 0; i < this.child.individuals.length; i++) {		
-			float normalR = (float) (this.child.individuals[i].genome[0] / (this.goal * 1.0));
-			float normalG = (float) (this.child.individuals[i].genome[1] / (this.goal * 1.0));
-			float normalB = (float) (this.child.individuals[i].genome[2] / (this.goal * 1.0));
-			float normalX = (float) (this.child.individuals[i].genome[3] / (this.goal * 1.0));
-			float normalY = (float) (this.child.individuals[i].genome[4] / (this.goal * 1.0));
+		for (int i = 0; i < this.child.getIndividuals().length; i++) {		
+			float normalR = (float) (this.child.getIndividual(i).genome[0] / (this.goal * 1.0));
+			float normalG = (float) (this.child.getIndividual(i).genome[1] / (this.goal * 1.0));
+			float normalB = (float) (this.child.getIndividual(i).genome[2] / (this.goal * 1.0));
+			float normalX = (float) (this.child.getIndividual(i).genome[3] / (this.goal * 1.0));
+			float normalY = (float) (this.child.getIndividual(i).genome[4] / (this.goal * 1.0));
 			
 			int red = (int) Math.floor(255 * normalR);
 			int green = (int) Math.floor(255 * normalG);

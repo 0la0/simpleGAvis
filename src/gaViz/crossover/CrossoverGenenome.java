@@ -8,12 +8,12 @@ public class CrossoverGenenome implements ICrossover{
 
 	//crossover once per gene
 	public void crossover(Population p) {
-		for (int i = 0; i < p.size; i += 2) {
-			Individual parent1 = p.individuals[i + 0];
-			Individual parent2 = p.individuals[i + 1];
-			Individual child1 = new Individual(p.numGenes);
-			Individual child2 = new Individual(p.numGenes);
-			for (int j = 0; j < p.numGenes; j++) {
+		for (int i = 0; i < p.getSize(); i += 2) {
+			Individual parent1 = p.getIndividual(i + 0);
+			Individual parent2 = p.getIndividual(i + 1);
+			Individual child1 = new Individual( p.getNumGenes() );
+			Individual child2 = new Individual( p.getNumGenes() );
+			for (int j = 0; j < p.getNumGenes(); j++) {
 				String p1 = BinaryStringHelper.intToBinaryString(parent1.genome[j]);
 				String p2 = BinaryStringHelper.intToBinaryString(parent2.genome[j]);
 				int crossoverIndex = 1 + (int) Math.floor( (p1.length() - 1) * Math.random() );
@@ -26,8 +26,8 @@ public class CrossoverGenenome implements ICrossover{
 				child1.genome[j] = BinaryStringHelper.binaryStringToInt(c1);
 				child2.genome[j] = BinaryStringHelper.binaryStringToInt(c2);
 			}
-			p.individuals[i + 0] = child1;
-			p.individuals[i + 1] = child2;
+			p.setIndividual(i + 0, child1);
+			p.setIndividual(i + 1, child2);
 		}
 	}
 	
