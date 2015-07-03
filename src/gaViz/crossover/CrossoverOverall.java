@@ -18,8 +18,8 @@ public class CrossoverOverall implements ICrossover{
 			String parentString1 = "";
 			String parentString2 = "";
 			for (int j = 0; j < numGenes; j++) {
-				parentString1 += BinaryStringHelper.intToBinaryString(parent1.genome[j]);
-				parentString2 += BinaryStringHelper.intToBinaryString(parent2.genome[j]);
+				parentString1 += BinaryStringHelper.intToBinaryString(parent1.getGene(j));
+				parentString2 += BinaryStringHelper.intToBinaryString(parent2.getGene(j));
 			}
 			int crossoverIndex = 1 + (int) Math.floor( (parentString1.length() - 1) * Math.random());
 			String p1_1 = parentString1.substring(0, crossoverIndex);
@@ -29,8 +29,11 @@ public class CrossoverOverall implements ICrossover{
 			String c1 = p1_1 + p2_2;
 			String c2 = p1_2 + p2_1;
 			for (int j = 0; j < numGenes; j++) {
-				child1.genome[j] = BinaryStringHelper.binaryStringToInt(c1.substring(j * geneLength, (j * geneLength) + geneLength));
-				child2.genome[j] = BinaryStringHelper.binaryStringToInt(c2.substring(j * geneLength, (j * geneLength) + geneLength));
+				int gene1 = BinaryStringHelper.binaryStringToInt(c1.substring(j * geneLength, (j * geneLength) + geneLength));
+				int gene2 = BinaryStringHelper.binaryStringToInt(c2.substring(j * geneLength, (j * geneLength) + geneLength));
+				
+				child1.setGene( j, gene1 );
+				child2.setGene( j, gene2 );
 			}
 			
 			p.setIndividual(i + 0, child1);

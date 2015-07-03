@@ -46,13 +46,13 @@ public class FitnessSequence implements IFitness {
 		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
 			//for each gene in an individual's genome
-			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
+			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
 				int compareScore = this.compareStrings(
-						BinaryStringHelper.intToBinaryString(p.getIndividual(i).genome[j]).toCharArray(),
+						BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGenome()[j]).toCharArray(),
 						this.binaryGoal[j].toCharArray());
 				fitness += (int) Math.pow(compareScore, 2);
 			}
-			p.getIndividual(i).rawFitness = fitness;
+			p.getIndividual(i).setRawFitness(fitness);
 			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}

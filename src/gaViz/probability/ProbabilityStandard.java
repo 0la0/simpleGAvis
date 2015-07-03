@@ -8,11 +8,12 @@ public class ProbabilityStandard implements IProbability{
 		float totalProb = 0;
 		for (int i = 0; i < p.getSize(); i++) {
 			//calc individual probability
-			p.getIndividual(i).probability = (float) ( p.getIndividual(i).rawFitness / (p.getTotalFitness() * 1.0) );
+			float probability = (float) ( p.getIndividual(i).getRawFitness() / (p.getTotalFitness() * 1.0) );
+			p.getIndividual(i).setProbability(probability);
 			//set cumulative probability
-			p.getIndividual(i).cumulativeLowerBound = totalProb;
-			totalProb += p.getIndividual(i).probability;
-			p.getIndividual(i).cumulativeUpperBound = totalProb;
+			p.getIndividual(i).setCumulativeLowerBound(totalProb);
+			totalProb += probability;
+			p.getIndividual(i).setCumulativeUpperBound(totalProb);
 		}
 	}
 

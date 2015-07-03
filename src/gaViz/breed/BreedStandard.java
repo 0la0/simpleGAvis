@@ -10,7 +10,7 @@ public class BreedStandard implements IBreeder{
 		//generate the mating pool from p
 		Population child = new Population(p.getSize(), p.getNumGenes());
 		for (int i = 0; i < child.getSize(); i++) {
-			Individual individual = new Individual(p.getProbabilisticIndividual().genome);
+			Individual individual = new Individual(p.getProbabilisticIndividual().getGenome());
 			child.addIndividual(i, individual);
 		}
 		return child;

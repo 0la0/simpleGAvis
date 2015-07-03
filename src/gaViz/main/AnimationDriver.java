@@ -143,8 +143,8 @@ public class AnimationDriver {
 		*/
 
 		for (int i = 0; i < this.child.getIndividuals().length; i++) {
-			float normalX = (float) (this.child.getIndividual(i).genome[0] / (goal * 1.0));
-			float normalY = (float) (this.child.getIndividual(i).genome[1] / (goal * 1.0));
+			float normalX = (float) (this.child.getIndividual(i).getGene(0) / (goal * 1.0));
+			float normalY = (float) (this.child.getIndividual(i).getGene(1) / (goal * 1.0));
 			
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);
@@ -167,9 +167,9 @@ public class AnimationDriver {
 		
 		this.child.sort(this.populationSort);
 		for (int i = 0; i < this.child.getIndividuals().length; i++) {
-			float normalR = (float) (this.child.getIndividual(i).genome[0] / (this.goal * 1.0));
-			float normalG = (float) (this.child.getIndividual(i).genome[1] / (this.goal * 1.0));
-			float normalB = (float) (this.child.getIndividual(i).genome[2] / (this.goal * 1.0));
+			float normalR = (float) (this.child.getIndividual(i).getGene(0) / (this.goal * 1.0));
+			float normalG = (float) (this.child.getIndividual(i).getGene(1) / (this.goal * 1.0));
+			float normalB = (float) (this.child.getIndividual(i).getGene(2) / (this.goal * 1.0));
 			int red = (int) Math.floor(255 * normalR);
 			int green = (int) Math.floor(255 * normalG);
 			int blue = (int) Math.floor(255 * normalB);
@@ -209,11 +209,11 @@ public class AnimationDriver {
 		}
 		
 		for (int i = 0; i < this.child.getIndividuals().length; i++) {		
-			float normalR = (float) (this.child.getIndividual(i).genome[0] / (this.goal * 1.0));
-			float normalG = (float) (this.child.getIndividual(i).genome[1] / (this.goal * 1.0));
-			float normalB = (float) (this.child.getIndividual(i).genome[2] / (this.goal * 1.0));
-			float normalX = (float) (this.child.getIndividual(i).genome[3] / (this.goal * 1.0));
-			float normalY = (float) (this.child.getIndividual(i).genome[4] / (this.goal * 1.0));
+			float normalR = (float) (this.child.getIndividual(i).getGene(0) / (this.goal * 1.0));
+			float normalG = (float) (this.child.getIndividual(i).getGene(1) / (this.goal * 1.0));
+			float normalB = (float) (this.child.getIndividual(i).getGene(2) / (this.goal * 1.0));
+			float normalX = (float) (this.child.getIndividual(i).getGene(3) / (this.goal * 1.0));
+			float normalY = (float) (this.child.getIndividual(i).getGene(4) / (this.goal * 1.0));
 			
 			int red = (int) Math.floor(255 * normalR);
 			int green = (int) Math.floor(255 * normalG);

@@ -18,8 +18,8 @@ public class FitnessNumOnes implements IFitness{
 		p.setTotalFitness(0);
 		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
-			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
-				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.getIndividual(i).genome[j]).toCharArray();
+			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
+				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGenome()[j]).toCharArray();
 				for (int k = 0; k < binaryGene.length; k++) {
 					if (binaryGene[k] == '1') {
 						fitness++;
@@ -27,7 +27,7 @@ public class FitnessNumOnes implements IFitness{
 				}
 			}
 			fitness = (int) Math.pow(fitness, 2);
-			p.getIndividual(i).rawFitness = fitness;
+			p.getIndividual(i).setRawFitness(fitness);
 			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}

@@ -53,10 +53,10 @@ public class FitnessCustomGoal implements IFitness{
 		int maxVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
 		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
-			for (int j = 0; j < p.getIndividual(i).numGenes; j++) {
-				fitness += (maxVal - Math.pow(p.getIndividual(i).genome[j] - this.goal[j], 2));
+			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
+				fitness += (maxVal - Math.pow(p.getIndividual(i).getGenome()[j] - this.goal[j], 2));
 			}
-			p.getIndividual(i).rawFitness = fitness;
+			p.getIndividual(i).setRawFitness(fitness);
 			p.setTotalFitness(p.getTotalFitness() + fitness);
 		}
 	}
@@ -88,7 +88,7 @@ public class FitnessCustomGoal implements IFitness{
 		
 		double fitnessSum = Arrays.stream(p.getIndividuals())
 				.mapToDouble(individual -> {
-					return  maxGeneVal - Math.pow(individual.genome[geneIndex] - this.goal[geneIndex], 2);
+					return  maxGeneVal - Math.pow(individual.getGenome()[geneIndex] - this.goal[geneIndex], 2);
 				})
 				.sum();
 		

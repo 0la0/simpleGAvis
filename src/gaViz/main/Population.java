@@ -82,8 +82,8 @@ public class Population {
 	public Individual getProbabilisticIndividual () {
 		float randVal = (float) Math.random();
 		for (int i = 0; i < size; i++) {
-			if (randVal >= this.individuals[i].cumulativeLowerBound && 
-				randVal <= this.individuals[i].cumulativeUpperBound) {
+			if (randVal >= this.individuals[i].getCumulativeLowerBound() && 
+				randVal <= this.individuals[i].getCumulativeUpperBound() ) {
 				return this.individuals[i];
 			}
 		}

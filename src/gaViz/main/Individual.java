@@ -2,12 +2,12 @@ package gaViz.main;
 
 public class Individual {
 
-	public int numGenes;
-	public int[] genome;
-	public int rawFitness = 0;
-	public float probability = 0;
-	public float cumulativeLowerBound;
-	public float cumulativeUpperBound;
+	private int numGenes;
+	private int[] genome;
+	private int rawFitness = 0;
+	private float probability = 0;
+	private float cumulativeLowerBound;
+	private float cumulativeUpperBound;
 	
 	public Individual (int numGenes) {
 		this.numGenes = numGenes;
@@ -27,6 +27,60 @@ public class Individual {
 	public Individual (int[] genome) {
 		this.numGenes = genome.length;
 		this.genome = genome;
+	}
+	
+	public int getNumGenes () {
+		return this.numGenes;
+	}
+	
+	public int[] getGenome () {
+		return this.genome;
+	}
+	
+	public int getRawFitness () {
+		return this.rawFitness;
+	}
+	
+	public void setRawFitness (int rawFitness) {
+		this.rawFitness = rawFitness;
+	}
+	
+	public float getProbability () {
+		return this.probability;
+	}
+	
+	public void setProbability (float probability) {
+		this.probability = probability;
+	}
+	
+	public float getCumulativeLowerBound () {
+		return this.cumulativeLowerBound;
+	}
+	
+	public void setCumulativeLowerBound (float lb) {
+		this.cumulativeLowerBound = lb;
+	}
+	
+	public float getCumulativeUpperBound () {
+		return this.cumulativeUpperBound;
+	}
+	
+	public void setCumulativeUpperBound (float ub) {
+		this.cumulativeUpperBound = ub;
+	}
+	public int getGene (int index) {
+		if (index < 0 || index >= this.genome.length) {
+			System.out.println("Individual.getGene indexOutOfBounds");
+			return 0;
+		}
+		return this.genome[index];
+	}
+	
+	public void setGene (int index, int val) {
+		if (index < 0 || index >= this.genome.length) {
+			System.out.println("Individual.setGene indexOutOfBounds");
+		}
+		this.genome[index] = val;
 	}
 	
 	public int getGeneSum () {

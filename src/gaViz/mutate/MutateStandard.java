@@ -17,7 +17,7 @@ public class MutateStandard implements IMutate{
 			Individual nonMutatedInd = p.getIndividual(i);
 			Individual mutatedInd = new Individual(p.getNumGenes());
 			for (int j = 0; j < p.getNumGenes(); j++) {
-				char[] paramArr = BinaryStringHelper.intToBinaryString(nonMutatedInd.genome[j]).toCharArray();
+				char[] paramArr = BinaryStringHelper.intToBinaryString( nonMutatedInd.getGene(j) ).toCharArray();
 				for (int k = 0; k < paramArr.length; k++) {
 					if (Math.random() < this.mutateThreshold) {
 						//flip binary character
@@ -28,7 +28,8 @@ public class MutateStandard implements IMutate{
 						}
 					}
 				}
-				mutatedInd.genome[j] = BinaryStringHelper.binaryStringToInt(new String(paramArr));
+				int geneVal = BinaryStringHelper.binaryStringToInt(new String(paramArr));
+				mutatedInd.setGene(j, geneVal);
 			}
 			p.setIndividual(i, mutatedInd);
 		}
