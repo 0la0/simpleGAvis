@@ -172,7 +172,7 @@ public class Basic3dDriver {
 			//float ry = (float) (Math.random());
 			//float rz = (float) (Math.random());
 			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
-			this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
+			this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
 			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b});
 			//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
 		
@@ -214,7 +214,7 @@ public class Basic3dDriver {
 		float ry = (float) (Math.random());
 		float rz = (float) (Math.random());
 		//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
-		this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
+		this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
 		
 		this.goalCube = new Cube(60, 60, 60);
 		this.goalCube.translate(x * 500, y * 500, z * 500);

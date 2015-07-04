@@ -43,7 +43,7 @@ public class FitnessNumOnes implements IFitness{
 	}
 
 	@Override
-	public void setGoal(float[] goal) {
+	public void setGoal(double[] goal) {
 		// TODO Auto-generated method stub
 		
 	}

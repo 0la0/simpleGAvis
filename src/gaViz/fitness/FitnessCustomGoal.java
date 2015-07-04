@@ -9,14 +9,12 @@ import gaViz.main.Population;
 public class FitnessCustomGoal implements IFitness{
 
 	private int[] goal;
-	//private float[] realGoal;
 	
 	public FitnessCustomGoal (int[] goal) {
 		this.setGoal(goal);
 	}
 	
-	public FitnessCustomGoal (float[] goal) {
-		//this.realGoal = goal;
+	public FitnessCustomGoal (double[] goal) {
 		this.setGoal(goal);
 	}
 	
@@ -24,20 +22,36 @@ public class FitnessCustomGoal implements IFitness{
 		this.goal = goal;
 	}
 	
-	public void setGoal (float[] goal) {
-		this.goal = new int[goal.length];
+	public void setGoal (double[] goal) {
+		//this.goal = new int[goal.length];
 		int max = BinaryStringHelper.maxVal;
-		for (int i = 0; i < goal.length; i++) {
-			if (goal[i] <= 0) {
-				this.goal[i] = 0;
+		
+		this.goal = Arrays.stream(goal).mapToInt(goalElement -> {
+			int intMappedGoal;
+			if (goalElement <= 0) {
+				intMappedGoal = 0;
 			}
-			else if (goal[i] >= 1) {
-				this.goal[i] = max;
+			else if (goalElement >= 1) {
+				intMappedGoal = max;
 			}
 			else {
-				this.goal[i] = (int) Math.floor(max * goal[i]);
+				intMappedGoal = (int) Math.floor(max * goalElement);
 			}
-		}
+			return intMappedGoal;
+		}).toArray();
+		
+		
+//		for (int i = 0; i < goal.length; i++) {
+//			if (goal[i] <= 0) {
+//				this.goal[i] = 0;
+//			}
+//			else if (goal[i] >= 1) {
+//				this.goal[i] = max;
+//			}
+//			else {
+//				this.goal[i] = (int) Math.floor(max * goal[i]);
+//			}
+//		}
 	}
 	
 	/*

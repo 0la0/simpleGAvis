@@ -2,6 +2,7 @@ package gaViz.main;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 
 public class Population {
@@ -25,14 +26,17 @@ public class Population {
 			individuals[i] = new Individual(numGenes, maxSize);
 		}
 	}
+	
+	public Population (Individual[] individuals) {
+		this.size = individuals.length;
+		this.numGenes = individuals[0].getNumGenes();
+		this.individuals = individuals;
+	}
 
-
-	//private int numGenes;
 	public int getNumGenes () {
 		return this.numGenes;
 	}
 	
-	//private int size;
 	public int getSize () {
 		return this.size;
 	}

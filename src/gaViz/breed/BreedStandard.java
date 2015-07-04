@@ -1,19 +1,19 @@
 package gaViz.breed;
+import java.util.Arrays;
+
 import gaViz.main.Individual;
 import gaViz.main.Population;
 
 
 public class BreedStandard implements IBreeder{
 
-	public Population breed (Population p) {
-		
+	public Population breed (Population p) {	
 		//generate the mating pool from p
-		Population child = new Population(p.getSize(), p.getNumGenes());
-		for (int i = 0; i < child.getSize(); i++) {
-			Individual individual = new Individual(p.getProbabilisticIndividual().getGenome());
-			child.addIndividual(i, individual);
+		Individual[] individuals = new Individual[p.getSize()];
+		for (int i = 0; i < p.getSize(); i++) {
+			individuals[i] = new Individual(p.getProbabilisticIndividual().getGenome());
 		}
-		return child;
+		return new Population(individuals);
 	}
 
 }

@@ -6,7 +6,7 @@ public interface IFitness {
 	
 	public void setGoal(int[] goal);
 	
-	public void setGoal(float[] goal);
+	public void setGoal(double[] goal);
 	
 	public int[] getGoal ();
 	

@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Comparator;
 
 import javax.swing.JFrame;
@@ -72,12 +73,11 @@ public class AnimationDriver {
 	}
 	
 	private void createNewGoal () {
-		float[] nGoal = new float[this.child.getNumGenes()];
+		double[] nGoal = new double[this.child.getNumGenes()];
 		for (int i = 0; i < nGoal.length; i++) {
-			nGoal[i] = (float) Math.random();
+			nGoal[i] = Math.random();
 		}
 		this.options.fitnessObj.setGoal(nGoal);
-		System.out.println("set new goal");
 	}
 	
 	private void generate () {
@@ -136,20 +136,18 @@ public class AnimationDriver {
 			this.imgGraphics.fillRect(goalPosition[0] - 5, goalPosition[1] - 5, 10, 10);
 			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
 		}
-		/*
-		else {
-			this.imgGraphics.setPaint(new Color(255, 255, 255, 10));
-		}
-		*/
-
-		for (int i = 0; i < this.child.getIndividuals().length; i++) {
-			float normalX = (float) (this.child.getIndividual(i).getGene(0) / (goal * 1.0));
-			float normalY = (float) (this.child.getIndividual(i).getGene(1) / (goal * 1.0));
+		
+		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
+			float normalX = (float) (individual.getGene(0) / (goal * 1.0));
+			float normalY = (float) (individual.getGene(1) / (goal * 1.0));
 			
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);
+			
+			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
 			this.imgGraphics.fillRect(x - 1, y - 1, 2, 2);
-		}
+		});
+		
 		animationPanel.setBufferedImage(this.img);
 	}
 	
@@ -166,15 +164,16 @@ public class AnimationDriver {
 		}
 		
 		this.child.sort(this.populationSort);
+		
 		for (int i = 0; i < this.child.getIndividuals().length; i++) {
-			float normalR = (float) (this.child.getIndividual(i).getGene(0) / (this.goal * 1.0));
-			float normalG = (float) (this.child.getIndividual(i).getGene(1) / (this.goal * 1.0));
-			float normalB = (float) (this.child.getIndividual(i).getGene(2) / (this.goal * 1.0));
-			int red = (int) Math.floor(255 * normalR);
-			int green = (int) Math.floor(255 * normalG);
-			int blue = (int) Math.floor(255 * normalB);
-			this.imgGraphics.setColor(new Color(red, green, blue));
+			Individual individual = this.child.getIndividual(i);
+			
+			int[] rgb = Arrays.stream(individual.getGenome()).map(gene -> {
+				double normalVal = gene / (this.goal * 1.0);
+				return (int) Math.floor(255 * normalVal);
+			}).toArray();
 
+			this.imgGraphics.setColor(new Color(rgb[0], rgb[1], rgb[2]));
 			this.imgGraphics.fillRect(i + this.child.getSize(), 0, 1, 1);
 			this.imgGraphics.fillRect(this.child.getSize() - i, 0, 1, 1);
 		}
@@ -208,22 +207,20 @@ public class AnimationDriver {
 			//opacityMult = 20;
 		}
 		
-		for (int i = 0; i < this.child.getIndividuals().length; i++) {		
-			float normalR = (float) (this.child.getIndividual(i).getGene(0) / (this.goal * 1.0));
-			float normalG = (float) (this.child.getIndividual(i).getGene(1) / (this.goal * 1.0));
-			float normalB = (float) (this.child.getIndividual(i).getGene(2) / (this.goal * 1.0));
-			float normalX = (float) (this.child.getIndividual(i).getGene(3) / (this.goal * 1.0));
-			float normalY = (float) (this.child.getIndividual(i).getGene(4) / (this.goal * 1.0));
+		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
+			double[] normalVals = Arrays.stream(individual.getGenome()).mapToDouble(gene -> {
+				return gene / (this.goal * 1.0);
+			}).toArray();
 			
-			int red = (int) Math.floor(255 * normalR);
-			int green = (int) Math.floor(255 * normalG);
-			int blue = (int) Math.floor(255 * normalB);
-			int x = (int) Math.floor(w * normalX);
-			int y = (int) Math.floor(h * normalY);
+			int red = (int) Math.floor(255 * normalVals[0]);
+			int green = (int) Math.floor(255 * normalVals[1]);
+			int blue = (int) Math.floor(255 * normalVals[2]);
+			int x = (int) Math.floor(w * normalVals[3]);
+			int y = (int) Math.floor(h * normalVals[4]);
 			
 			this.imgGraphics.setPaint(new Color(red, green, blue, 10 * opacityMult));
 			this.imgGraphics.fillRect(x, y, 2, 2);
-		}
+		});
 		animationPanel.setBufferedImage(this.img);
 	}
 	

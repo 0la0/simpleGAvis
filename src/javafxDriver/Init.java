@@ -32,7 +32,7 @@ public class Init extends Application {
 		stage.setScene(scene);
 		stage.setTitle("Genetic Algorithm 3D Visualization");
 		
-		float[] initialGoalState = new float[]{0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
+		double[] initialGoalState = new double[]{0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
 		
 		Options options = new Options();
 		options.numGenes = 9;

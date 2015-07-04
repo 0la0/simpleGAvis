@@ -234,7 +234,7 @@ public class Init {
 		JButton goButton = new JButton("--go--");
 		goButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				float[] geneGoals = new float[Integer.parseInt(numGenes.getText())];
+				double[] geneGoals = new double[Integer.parseInt(numGenes.getText())];
 				for (int i = 0; i < geneGoals.length; i++) {
 					geneGoals[i] = Float.parseFloat(geneFields[i].getText());
 				}
@@ -290,7 +290,7 @@ public class Init {
 		});
 	}
 	
-	private void buildOptions (String mainType, int numGenes, int geneLength, int populationSize, int numGenerations, float mutateThresh, String crossoverType, String fitnessType, float[] geneGoals, String printOption) {
+	private void buildOptions (String mainType, int numGenes, int geneLength, int populationSize, int numGenerations, float mutateThresh, String crossoverType, String fitnessType, double[] geneGoals, String printOption) {
 		BinaryStringHelper.setStringLength(geneLength);
 		
 		Options options = new Options();

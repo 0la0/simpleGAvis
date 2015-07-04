@@ -1,5 +1,7 @@
 package gaViz.main;
 
+import java.util.Arrays;
+
 public class Individual {
 
 	private int numGenes;
@@ -84,11 +86,7 @@ public class Individual {
 	}
 	
 	public int getGeneSum () {
-		int sum = 0;
-		for (int i = 0; i < this.genome.length; i++) {
-			sum += this.genome[i];
-		}
-		return sum;
+		return Arrays.stream(this.genome).sum();
 	}
 	
 	@Override
