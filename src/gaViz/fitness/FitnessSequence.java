@@ -48,7 +48,7 @@ public class FitnessSequence implements IFitness {
 			//for each gene in an individual's genome
 			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
 				int compareScore = this.compareStrings(
-						BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGenome()[j]).toCharArray(),
+						BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGene(j)).toCharArray(),
 						this.binaryGoal[j].toCharArray());
 				fitness += (int) Math.pow(compareScore, 2);
 			}

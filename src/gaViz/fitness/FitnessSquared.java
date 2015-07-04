@@ -19,7 +19,7 @@ public class FitnessSquared implements IFitness{
 		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
 			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
-				fitness += Math.pow(p.getIndividual(i).getGenome()[j], 2);
+				fitness += Math.pow(p.getIndividual(i).getGene(j), 2);
 			}
 			p.getIndividual(i).setRawFitness(fitness);
 			p.setTotalFitness(p.getTotalFitness() + fitness);

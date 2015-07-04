@@ -19,7 +19,7 @@ public class FitnessNumOnes implements IFitness{
 		for (int i = 0; i < p.getSize(); i++) {
 			int fitness = 0;
 			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
-				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGenome()[j]).toCharArray();
+				char[] binaryGene = BinaryStringHelper.intToBinaryString(p.getIndividual(i).getGene(j)).toCharArray();
 				for (int k = 0; k < binaryGene.length; k++) {
 					if (binaryGene[k] == '1') {
 						fitness++;

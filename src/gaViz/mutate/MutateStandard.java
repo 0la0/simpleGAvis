@@ -21,6 +21,25 @@ public class MutateStandard implements IMutate{
 		
 		List<Individual> mutatedIndividuals = Arrays.stream(p.getIndividuals()).map( nonMutatedIndividual -> {
 			
+			List<Integer> mutatedGenome = nonMutatedIndividual.getGenome().stream()
+					.map(gene -> {
+						char[] mutatedGene = BinaryStringHelper.intToBinaryString(gene).toCharArray();
+						for (int i = 0; i < mutatedGene.length; i++) {
+							if (Math.random() < this.mutateThreshold) {
+								//flip binary character
+								if (mutatedGene[i] == '0') {
+									mutatedGene[i] = '1';
+								} else {
+									mutatedGene[i] = '0';
+								}
+							}
+						}
+						int mutatedGeneIntVal = BinaryStringHelper.binaryStringToInt(new String(mutatedGene));
+						return mutatedGeneIntVal;
+					})
+					.collect(Collectors.toList());
+			
+			/*
 			int[] mutatedGenome = Arrays.stream(nonMutatedIndividual.getGenome()).map(gene -> {
 				char[] mutatedGene = BinaryStringHelper.intToBinaryString(gene).toCharArray();
 				for (int i = 0; i < mutatedGene.length; i++) {
@@ -36,6 +55,7 @@ public class MutateStandard implements IMutate{
 				int mutatedGeneIntVal = BinaryStringHelper.binaryStringToInt(new String(mutatedGene));
 				return mutatedGeneIntVal;
 			}).toArray();
+			*/
 			
 			Individual mutatedInd = new Individual(mutatedGenome);
 			return mutatedInd;

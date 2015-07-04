@@ -57,6 +57,14 @@ public class FitnessCustomGoal implements IFitness{
 		int totalPopulationFitness = Arrays.stream(p.getIndividuals()).mapToInt(individual -> {
 			
 			AtomicInteger geneIndex = new AtomicInteger(0);
+			int individualFitness = individual.getGenome().stream()
+					.mapToInt(gene -> {
+						int goalState = this.goal[geneIndex.getAndIncrement()];
+						int geneFitness = maxVal - (int) Math.pow(gene - goalState, 2);
+						return geneFitness;
+					})
+					.sum();
+			/*
 			int individualFitness = Arrays.stream(individual.getGenome())
 					.map(gene -> {
 						int goalState = this.goal[geneIndex.getAndIncrement()];
@@ -64,7 +72,7 @@ public class FitnessCustomGoal implements IFitness{
 						return geneFitness;
 					})
 					.sum();
-			
+			*/
 			//set raw fitness of the individual in question
 			individual.setRawFitness(individualFitness);
 			
@@ -103,7 +111,7 @@ public class FitnessCustomGoal implements IFitness{
 		
 		double fitnessSum = Arrays.stream(p.getIndividuals())
 				.mapToDouble(individual -> {
-					return  maxGeneVal - Math.pow(individual.getGenome()[geneIndex] - this.goal[geneIndex], 2);
+					return  maxGeneVal - Math.pow(individual.getGene(geneIndex) - this.goal[geneIndex], 2);
 				})
 				.sum();
 		

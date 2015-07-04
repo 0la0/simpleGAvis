@@ -172,8 +172,13 @@ public class AnimationDriver {
 		
 		for (int i = 0; i < this.child.getIndividuals().length; i++) {
 			Individual individual = this.child.getIndividual(i);
-			
+			/*
 			int[] rgb = Arrays.stream(individual.getGenome()).map(gene -> {
+				double normalVal = gene / (this.goal * 1.0);
+				return (int) Math.floor(255 * normalVal);
+			}).toArray();
+			*/
+			int[] rgb = individual.getGenome().stream().mapToInt(gene -> {
 				double normalVal = gene / (this.goal * 1.0);
 				return (int) Math.floor(255 * normalVal);
 			}).toArray();
@@ -213,7 +218,7 @@ public class AnimationDriver {
 		}
 		
 		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
-			double[] normalVals = Arrays.stream(individual.getGenome()).mapToDouble(gene -> {
+			double[] normalVals = individual.getGenome().stream().mapToDouble(gene -> {
 				return gene / (this.goal * 1.0);
 			}).toArray();
 			

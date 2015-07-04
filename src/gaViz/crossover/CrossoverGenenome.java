@@ -23,8 +23,10 @@ public class CrossoverGenenome implements ICrossover{
 				String p2_2 = p2.substring(crossoverIndex, p2.length());
 				String c1 = p1_1 + p2_2;
 				String c2 = p2_1 + p1_2;
-				child1.setGene( j, BinaryStringHelper.binaryStringToInt(c1) );
-				child2.setGene( j, BinaryStringHelper.binaryStringToInt(c2) );
+				//child1.setGene( j, BinaryStringHelper.binaryStringToInt(c1) );
+				//child2.setGene( j, BinaryStringHelper.binaryStringToInt(c2) );
+				child1.addGene(BinaryStringHelper.binaryStringToInt(c1));
+				child2.addGene(BinaryStringHelper.binaryStringToInt(c2));
 			}
 			p.setIndividual(i + 0, child1);
 			p.setIndividual(i + 1, child2);
