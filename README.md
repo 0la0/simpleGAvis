@@ -5,8 +5,11 @@ A Java program for visualizing an implementation of the "Simple Genetic Algorith
 
 http://en.wikipedia.org/wiki/Genetic_algorithm
 
-The program runs on JRE 1.7+ and uses Swing.
-The user can parameterize and view genetic algorithms as text, images, or animations.
+Dependencies: JRE 1.8+
+
+There are currently two different user interfaces, one for visualizing the algorithm in 2D space (made in swing), and another for visualizing it in 3D space (JavaFX).
+
+To view genetic algorithms as text, 2D images, or 2D animations:
 ###Usage
 Compile:
 ```Shell
@@ -18,7 +21,7 @@ Run:
 java -cp ./bin gaViz/main/Init
 ```
 
-To experiment with visualizing the GA in 3D space using JavaFX (JRE 1.8+).
+To view the 3D version:
 ###Usage
 Compile:
 ```Shell
