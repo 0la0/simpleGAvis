@@ -7,9 +7,9 @@ public class Individual {
 	private int numGenes;
 	private int[] genome;
 	private int rawFitness = 0;
-	private float probability = 0;
-	private float cumulativeLowerBound;
-	private float cumulativeUpperBound;
+	private double probability = 0;
+	private double cumulativeLowerBound;
+	private double cumulativeUpperBound;
 	
 	public Individual (int numGenes) {
 		this.numGenes = numGenes;
@@ -47,27 +47,27 @@ public class Individual {
 		this.rawFitness = rawFitness;
 	}
 	
-	public float getProbability () {
+	public double getProbability () {
 		return this.probability;
 	}
 	
-	public void setProbability (float probability) {
+	public void setProbability (double probability) {
 		this.probability = probability;
 	}
 	
-	public float getCumulativeLowerBound () {
+	public double getCumulativeLowerBound () {
 		return this.cumulativeLowerBound;
 	}
 	
-	public void setCumulativeLowerBound (float lb) {
+	public void setCumulativeLowerBound (double lb) {
 		this.cumulativeLowerBound = lb;
 	}
 	
-	public float getCumulativeUpperBound () {
+	public double getCumulativeUpperBound () {
 		return this.cumulativeUpperBound;
 	}
 	
-	public void setCumulativeUpperBound (float ub) {
+	public void setCumulativeUpperBound (double ub) {
 		this.cumulativeUpperBound = ub;
 	}
 	public int getGene (int index) {

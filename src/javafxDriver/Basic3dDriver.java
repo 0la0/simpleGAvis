@@ -159,21 +159,21 @@ public class Basic3dDriver {
 		
 		//---------------RESET GOAL-----------------//
 		if (Math.random() < 0.005) {
-			float x = (float) (Math.random());
-			float y = (float) (Math.random());
-			float z = (float) (Math.random());
-			float r = (float) Math.random();
-			float g = (float) Math.random();
-			float b = (float) Math.random();
-			float scaleX = (float) (Math.random());
-			float scaleY = (float) (Math.random());
-			float scaleZ = (float) (Math.random());
-			//float rx = (float) (Math.random());
-			//float ry = (float) (Math.random());
-			//float rz = (float) (Math.random());
-			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
+			double x = Math.random();
+			double y = Math.random();
+			double z = Math.random();
+			double r = Math.random();
+			double g = Math.random();
+			double b = Math.random();
+			double scaleX = Math.random();
+			double scaleY = Math.random();
+			double scaleZ = Math.random();
+			//double rx = Math.random();
+			//double ry = Math.random();
+			//double rz = Math.random();
+			//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
 			this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
-			//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b});
+			//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b});
 			//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
 		
 			this.goalCube.translate((x - 0.5) * 1000, (y - 0.5) * 1000, (z - 0.5) * 1000);
@@ -201,19 +201,19 @@ public class Basic3dDriver {
 	}
 	
 	private void buildGoalCube () {
-		float x = (float) (Math.random());
-		float y = (float) (Math.random());
-		float z = (float) (Math.random());
-		float r = (float) Math.random();
-		float g = (float) Math.random();
-		float b = (float) Math.random();
-		float scaleX = (float) (Math.random());
-		float scaleY = (float) (Math.random());
-		float scaleZ = (float) (Math.random());
-		float rx = (float) (Math.random());
-		float ry = (float) (Math.random());
-		float rz = (float) (Math.random());
-		//this.options.fitnessObj.setGoal(new float[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
+		double x = Math.random();
+		double y = Math.random();
+		double z = Math.random();
+		double r = Math.random();
+		double g = Math.random();
+		double b = Math.random();
+		double scaleX = Math.random();
+		double scaleY = Math.random();
+		double scaleZ = Math.random();
+		double rx = Math.random();
+		double ry = Math.random();
+		double rz = Math.random();
+		//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
 		this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
 		
 		this.goalCube = new Cube(60, 60, 60);

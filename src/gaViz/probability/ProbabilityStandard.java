@@ -10,7 +10,6 @@ public class ProbabilityStandard implements IProbability{
 		
 		double totalPopulationFitness = p.getTotalFitness() * 1.0;
 		//AtomicDouble cumulativeSum = new AtomicDouble(0);
-		//final float cumulativeSum = 0;
 		CumulativeSum cumulative = new CumulativeSum();
 		
 		Arrays.stream(p.getIndividuals()).forEach(individual -> {
@@ -22,21 +21,6 @@ public class ProbabilityStandard implements IProbability{
 			individual.setCumulativeUpperBound((float) cumulative.sum);
 		});
 		
-		/*
-		float totalProb = 0;
-		
-		//for each individual calculate fitness
-		for (int i = 0; i < p.getSize(); i++) {
-			//calc individual probability
-			//individual fitness / population fitness?
-			float probability = (float) ( p.getIndividual(i).getRawFitness() / (p.getTotalFitness() * 1.0) );
-			p.getIndividual(i).setProbability(probability);
-			//set cumulative probability
-			p.getIndividual(i).setCumulativeLowerBound(totalProb);
-			totalProb += probability;
-			p.getIndividual(i).setCumulativeUpperBound(totalProb);
-		}
-		*/
 	}
 	
 	private class CumulativeSum {

@@ -12,6 +12,6 @@ public interface IFitness {
 	
 	public void calcFitness(Population p);
 	
-	public float evaluate(Population p);
+	public double evaluate(Population p);
 
 }

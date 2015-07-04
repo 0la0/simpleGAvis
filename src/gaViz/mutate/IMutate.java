@@ -4,7 +4,7 @@ import gaViz.main.Population;
 
 public interface IMutate {
 
-	public void setMutateThreshold(float mutateThreshold);
+	public void setMutateThreshold(double mutateThreshold);
 	
 	public void mutate(Population p);
 	

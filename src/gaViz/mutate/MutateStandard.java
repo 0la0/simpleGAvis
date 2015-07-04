@@ -11,9 +11,9 @@ import gaViz.main.Population;
 
 public class MutateStandard implements IMutate{
 
-	private float mutateThreshold;
+	private double mutateThreshold;
 	
-	public MutateStandard (float mutateThreshold) {
+	public MutateStandard (double mutateThreshold) {
 		this.mutateThreshold = mutateThreshold;
 	}
 	
@@ -55,7 +55,7 @@ public class MutateStandard implements IMutate{
 	}
 
 	@Override
-	public void setMutateThreshold (float mutateThreshold) {
+	public void setMutateThreshold (double mutateThreshold) {
 		this.mutateThreshold = mutateThreshold;
 	}
 

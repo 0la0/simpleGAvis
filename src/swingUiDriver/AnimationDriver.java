@@ -143,8 +143,8 @@ public class AnimationDriver {
 		}
 		
 		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
-			float normalX = (float) (individual.getGene(0) / (goal * 1.0));
-			float normalY = (float) (individual.getGene(1) / (goal * 1.0));
+			double normalX = individual.getGene(0) / (goal * 1.0);
+			double normalY = individual.getGene(1) / (goal * 1.0);
 			
 			int x = (int) Math.floor(w * normalX);
 			int y = (int) Math.floor(h * normalY);

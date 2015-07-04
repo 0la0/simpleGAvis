@@ -77,7 +77,7 @@ public class FitnessCustomGoal implements IFitness{
 	}
 
 	@Override
-	public float evaluate (Population p) {
+	public double evaluate (Population p) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
