@@ -1,4 +1,4 @@
-package gaViz.main;
+package swingUiDriver;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import gaViz.print.IPrint;
+import gaViz.main.BinaryStringHelper;
+import gaViz.main.Options;
+import gaViz.main.Population;
 
 
 public class StdOutDriver {

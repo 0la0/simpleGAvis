@@ -1,4 +1,4 @@
-package gaViz.print;
+package swingUiDriver;
 import javax.swing.JTextArea;
 
 import gaViz.main.BinaryStringHelper;

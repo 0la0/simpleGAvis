@@ -1,4 +1,9 @@
-package gaViz.main;
+package swingUiDriver;
+import gaViz.main.BinaryStringHelper;
+import gaViz.main.Options;
+import gaViz.main.Population;
+import gaViz.main.PopulationComparator;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package gaViz.main;
+package swingUiDriver;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import gaViz.fitness.FitnessCustomGoal;
+import gaViz.main.BinaryStringHelper;
+import gaViz.main.Individual;
+import gaViz.main.Options;
+import gaViz.main.Population;
+import gaViz.main.PopulationComparator;
 
 
 public class AnimationDriver {

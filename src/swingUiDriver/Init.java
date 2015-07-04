@@ -1,4 +1,4 @@
-package gaViz.main;
+package swingUiDriver;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -23,9 +23,10 @@ import javax.swing.border.TitledBorder;
 
 import gaViz.crossover.*;
 import gaViz.fitness.*;
-import gaViz.print.*;
 import gaViz.probability.ProbabilityStandard;
 import gaViz.breed.BreedStandard;
+import gaViz.main.BinaryStringHelper;
+import gaViz.main.Options;
 import gaViz.mutate.MutateStandard;
 
 public class Init {
