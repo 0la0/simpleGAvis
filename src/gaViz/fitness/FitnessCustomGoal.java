@@ -1,6 +1,7 @@
 package gaViz.fitness;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import gaViz.main.BinaryStringHelper;
 import gaViz.main.Individual;
@@ -23,7 +24,6 @@ public class FitnessCustomGoal implements IFitness{
 	}
 	
 	public void setGoal (double[] goal) {
-		//this.goal = new int[goal.length];
 		int max = BinaryStringHelper.maxVal;
 		
 		this.goal = Arrays.stream(goal).mapToInt(goalElement -> {
@@ -40,18 +40,6 @@ public class FitnessCustomGoal implements IFitness{
 			return intMappedGoal;
 		}).toArray();
 		
-		
-//		for (int i = 0; i < goal.length; i++) {
-//			if (goal[i] <= 0) {
-//				this.goal[i] = 0;
-//			}
-//			else if (goal[i] >= 1) {
-//				this.goal[i] = max;
-//			}
-//			else {
-//				this.goal[i] = (int) Math.floor(max * goal[i]);
-//			}
-//		}
 	}
 	
 	/*
@@ -63,16 +51,29 @@ public class FitnessCustomGoal implements IFitness{
 			System.out.println("fitness goal != number of genes => fatal error");
 			System.exit(0);
 		}
-		p.setTotalFitness(0);
+		
 		int maxVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
-		for (int i = 0; i < p.getSize(); i++) {
-			int fitness = 0;
-			for (int j = 0; j < p.getIndividual(i).getNumGenes(); j++) {
-				fitness += (maxVal - Math.pow(p.getIndividual(i).getGenome()[j] - this.goal[j], 2));
-			}
-			p.getIndividual(i).setRawFitness(fitness);
-			p.setTotalFitness(p.getTotalFitness() + fitness);
-		}
+		
+		int totalPopulationFitness = Arrays.stream(p.getIndividuals()).mapToInt(individual -> {
+			
+			AtomicInteger geneIndex = new AtomicInteger(0);
+			int individualFitness = Arrays.stream(individual.getGenome())
+					.map(gene -> {
+						int goalState = this.goal[geneIndex.getAndIncrement()];
+						int geneFitness = maxVal - (int) Math.pow(gene - goalState, 2);
+						return geneFitness;
+					})
+					.sum();
+			
+			//set raw fitness of the individual in question
+			individual.setRawFitness(individualFitness);
+			
+			return individualFitness;
+			
+		}).sum();
+		
+		p.setTotalFitness(totalPopulationFitness);
+
 	}
 
 	@Override
