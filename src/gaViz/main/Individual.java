@@ -7,7 +7,6 @@ public class Individual {
 
 	private int numGenes;
 	private List<Integer> genome;
-	//private int[] genome;
 	private int rawFitness = 0;
 	private double probability = 0;
 	private double cumulativeLowerBound;
@@ -15,25 +14,21 @@ public class Individual {
 	
 	public Individual (int numGenes) {
 		this.numGenes = numGenes;
-		//this.genome = new int[numGenes];
 		this.genome = new ArrayList<Integer>();
 	}
 	
 	public Individual (int numGenes, int maxVal) {
 		this.numGenes = numGenes;
-		//this.genome = new int[numGenes];
 		this.genome = new ArrayList<Integer>();
 		//initialize individual with random values
 		for (int i = 0; i < numGenes; i++) {
 			int randomVal = (int) Math.floor( maxVal * Math.random() );
 			this.genome.add(randomVal);
-			//this.genome[i] = (int) Math.floor( maxVal * Math.random() );
 		}
 	}
 	
 	//initialize individual with set values
 	public Individual (List<Integer> genome) {
-		//this.numGenes = genome.length;
 		this.numGenes = genome.size();
 		this.genome = genome;
 	}
@@ -83,7 +78,6 @@ public class Individual {
 			System.out.println("Individual.getGene indexOutOfBounds");
 			return 0;
 		}
-		//return this.genome[index];
 		return this.genome.get(index);
 	}
 	
@@ -92,7 +86,6 @@ public class Individual {
 			System.out.println("Individual.setGene indexOutOfBounds");
 			System.out.println("index: " + index);
 		}
-		//this.genome[index] = val;
 		this.genome.set(index, val);
 	}
 	
@@ -101,7 +94,6 @@ public class Individual {
 	}
 	
 	public int getGeneSum () {
-		//return Arrays.stream(this.genome).sum();
 		return this.genome.stream().mapToInt(gene -> gene).sum();
 	}
 	

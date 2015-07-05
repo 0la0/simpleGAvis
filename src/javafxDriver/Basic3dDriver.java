@@ -18,7 +18,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.SceneAntialiasing;
 import javafx.stage.Screen;
 
-
+//"Chromosome" comes from the Greek words khroma meaning "color" and soma meaning "body"!
 public class Basic3dDriver {
 
 	private Group root = new Group();

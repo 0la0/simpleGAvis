@@ -1,7 +1,5 @@
 package gaViz.probability;
 
-import java.util.Arrays;
-
 import gaViz.main.Population;
 
 public class ProbabilityStandard implements IProbability{
@@ -12,7 +10,7 @@ public class ProbabilityStandard implements IProbability{
 		//AtomicDouble cumulativeSum = new AtomicDouble(0);
 		CumulativeSum cumulative = new CumulativeSum();
 		
-		Arrays.stream(p.getIndividuals()).forEach(individual -> {
+		p.getIndividuals().stream().forEach(individual -> {
 			double individualFitness = (float) (individual.getRawFitness() / totalPopulationFitness);
 			individual.setProbability( (float) individualFitness);
 			//set cumulative bounds

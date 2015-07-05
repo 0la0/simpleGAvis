@@ -1,4 +1,7 @@
 package gaViz.crossover;
+import java.util.ArrayList;
+import java.util.List;
+
 import gaViz.main.BinaryStringHelper;
 import gaViz.main.Individual;
 import gaViz.main.Population;
@@ -8,6 +11,7 @@ public class CrossoverOverall implements ICrossover{
 
 	//perform one crossover across all genes
 	public void crossover(Population p) {
+		List<Individual> childPopulation = new ArrayList<Individual>();
 		int geneLength = BinaryStringHelper.geneLength;
 		int numGenes = p.getNumGenes();
 		for (int i = 0; i < p.getSize(); i += 2) {
@@ -36,9 +40,10 @@ public class CrossoverOverall implements ICrossover{
 				child2.setGene( j, gene2 );
 			}
 			
-			p.setIndividual(i + 0, child1);
-			p.setIndividual(i + 1, child2);
+			childPopulation.add(child1);
+			childPopulation.add(child2);
 		}
+		p.setIndividuals(childPopulation);
 	}
 
 }

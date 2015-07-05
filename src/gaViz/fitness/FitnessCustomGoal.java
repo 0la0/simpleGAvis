@@ -54,7 +54,7 @@ public class FitnessCustomGoal implements IFitness{
 		
 		int maxVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
 		
-		int totalPopulationFitness = Arrays.stream(p.getIndividuals()).mapToInt(individual -> {
+		int totalPopulationFitness = p.getIndividuals().stream().mapToInt(individual -> {
 			
 			AtomicInteger geneIndex = new AtomicInteger(0);
 			int individualFitness = individual.getGenome().stream()
@@ -109,7 +109,7 @@ public class FitnessCustomGoal implements IFitness{
 		int maxGeneVal = (int) Math.pow(BinaryStringHelper.maxVal, 2);
 		int maxPopVal = maxGeneVal * p.getSize();
 		
-		double fitnessSum = Arrays.stream(p.getIndividuals())
+		double fitnessSum = p.getIndividuals().stream()
 				.mapToDouble(individual -> {
 					return  maxGeneVal - Math.pow(individual.getGene(geneIndex) - this.goal[geneIndex], 2);
 				})

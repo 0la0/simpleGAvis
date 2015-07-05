@@ -17,45 +17,26 @@ public class MutateStandard implements IMutate{
 		this.mutateThreshold = mutateThreshold;
 	}
 	
+
 	public void mutate (Population p) {
 		
-		List<Individual> mutatedIndividuals = Arrays.stream(p.getIndividuals()).map( nonMutatedIndividual -> {
-			
+		//mutate population
+		List<Individual> mutatedIndividuals = p.getIndividuals().stream().map( nonMutatedIndividual -> {
+			//mutate individual
 			List<Integer> mutatedGenome = nonMutatedIndividual.getGenome().stream()
 					.map(gene -> {
-						char[] mutatedGene = BinaryStringHelper.intToBinaryString(gene).toCharArray();
-						for (int i = 0; i < mutatedGene.length; i++) {
+						char[] geneSequence = BinaryStringHelper.intToBinaryString(gene).toCharArray();
+						for (int i = 0; i < geneSequence.length; i++) {
 							if (Math.random() < this.mutateThreshold) {
 								//flip binary character
-								if (mutatedGene[i] == '0') {
-									mutatedGene[i] = '1';
-								} else {
-									mutatedGene[i] = '0';
-								}
+								geneSequence[i] = geneSequence[i] == '0' ? '1' : '0';
 							}
 						}
-						int mutatedGeneIntVal = BinaryStringHelper.binaryStringToInt(new String(mutatedGene));
-						return mutatedGeneIntVal;
+						int mutatedGene = BinaryStringHelper.binaryStringToInt(new String(geneSequence));
+						return mutatedGene;
 					})
 					.collect(Collectors.toList());
 			
-			/*
-			int[] mutatedGenome = Arrays.stream(nonMutatedIndividual.getGenome()).map(gene -> {
-				char[] mutatedGene = BinaryStringHelper.intToBinaryString(gene).toCharArray();
-				for (int i = 0; i < mutatedGene.length; i++) {
-					if (Math.random() < this.mutateThreshold) {
-						//flip binary character
-						if (mutatedGene[i] == '0') {
-							mutatedGene[i] = '1';
-						} else {
-							mutatedGene[i] = '0';
-						}
-					}
-				}
-				int mutatedGeneIntVal = BinaryStringHelper.binaryStringToInt(new String(mutatedGene));
-				return mutatedGeneIntVal;
-			}).toArray();
-			*/
 			
 			Individual mutatedInd = new Individual(mutatedGenome);
 			return mutatedInd;
@@ -65,14 +46,18 @@ public class MutateStandard implements IMutate{
 		
 		//TODO: figure out how to stream map to POJO array
 		// or just change arrays to lists
+		/*
 		AtomicInteger cnt = new AtomicInteger(0);
 		Individual[] mutatedArr = new Individual[mutatedIndividuals.size()];
 		mutatedIndividuals.forEach(individual -> {
 			mutatedArr[cnt.getAndIncrement()] = individual;
 		});
+		*/
 		
-		p.setIndividuals(mutatedArr);
+		p.setIndividuals(mutatedIndividuals);
 	}
+	
+	//private void mutateIndividual 
 
 	@Override
 	public void setMutateThreshold (double mutateThreshold) {

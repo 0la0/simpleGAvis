@@ -142,7 +142,7 @@ public class AnimationDriver {
 			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
 		}
 		
-		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
+		this.child.getIndividuals().forEach(individual -> {
 			double normalX = individual.getGene(0) / (goal * 1.0);
 			double normalY = individual.getGene(1) / (goal * 1.0);
 			
@@ -170,7 +170,7 @@ public class AnimationDriver {
 		
 		this.child.sort(this.populationSort);
 		
-		for (int i = 0; i < this.child.getIndividuals().length; i++) {
+		for (int i = 0; i < this.child.getIndividuals().size(); i++) {
 			Individual individual = this.child.getIndividual(i);
 			/*
 			int[] rgb = Arrays.stream(individual.getGenome()).map(gene -> {
@@ -217,7 +217,7 @@ public class AnimationDriver {
 			//opacityMult = 20;
 		}
 		
-		Arrays.stream(this.child.getIndividuals()).forEach(individual -> {
+		this.child.getIndividuals().stream().forEach(individual -> {
 			double[] normalVals = individual.getGenome().stream().mapToDouble(gene -> {
 				return gene / (this.goal * 1.0);
 			}).toArray();
