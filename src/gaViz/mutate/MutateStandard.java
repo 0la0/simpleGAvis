@@ -43,22 +43,9 @@ public class MutateStandard implements IMutate{
 		
 		}).collect(Collectors.toList());
 		
-		
-		//TODO: figure out how to stream map to POJO array
-		// or just change arrays to lists
-		/*
-		AtomicInteger cnt = new AtomicInteger(0);
-		Individual[] mutatedArr = new Individual[mutatedIndividuals.size()];
-		mutatedIndividuals.forEach(individual -> {
-			mutatedArr[cnt.getAndIncrement()] = individual;
-		});
-		*/
-		
 		p.setIndividuals(mutatedIndividuals);
 	}
 	
-	//private void mutateIndividual 
-
 	@Override
 	public void setMutateThreshold (double mutateThreshold) {
 		this.mutateThreshold = mutateThreshold;

@@ -7,17 +7,8 @@ public class PopulationComparator implements Comparator{
 	@Override
 	public int compare(Object obj0, Object obj1) {
 		
-		Individual ind0 = (Individual) obj0;
-		Individual ind1 = (Individual) obj1;
-		
-		int compareVar0;
-		int compareVar1;
-		
-		//compareVar0 = ind0.rawFitness;
-		//compareVar1 = ind1.rawFitness;
-		
-		compareVar0 = ind0.getGeneSum();
-		compareVar1 = ind1.getGeneSum();
+		int compareVar0 = ((Individual) obj0).getGeneSum();
+		int compareVar1 = ((Individual) obj1).getGeneSum();
 		
 		if (compareVar0 < compareVar1) {
 			return -1;
@@ -28,6 +19,7 @@ public class PopulationComparator implements Comparator{
 		else {
 			return 0;
 		}
+		
 	}
 	
 

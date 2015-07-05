@@ -12,24 +12,20 @@ public class Population {
 	
 	private int numGenes;
 	private int size;
-	//private Individual[] individuals;
 	private List<Individual> individuals;
 	private int totalFitness = 0;
 	
 	public Population (int size, int numGenes) {
 		this.size = size;
 		this.numGenes = numGenes;
-		//this.individuals = new Individual[size];
 		this.individuals = new ArrayList<Individual>();
 	}
 	
 	public Population (int size, int numGenes, int maxSize) {
 		this.size = size;
 		this.numGenes = numGenes;
-		//this.individuals = new Individual[size];
 		this.individuals = new ArrayList<Individual>();
 		for (int i = 0; i < this.size; i++) {
-			//individuals[i] = new Individual(numGenes, maxSize);
 			this.individuals.add(new Individual(numGenes, maxSize));
 		}
 	}
@@ -81,15 +77,7 @@ public class Population {
 	public void setTotalFitness (int totalFitness) {
 		this.totalFitness = totalFitness;
 	}
-	/*
-	public void addIndividual (int index, Individual individual) {
-		if (index < 0 || index >= size) {
-			System.out.println("err: addIndividual index outOfBounds");
-			return;
-		}
-		this.individuals[index] = individual;
-	}
-	*/
+	
 	public Individual getProbabilisticIndividual () {
 		double randVal = Math.random();
 		for (int i = 0; i < size; i++) {
@@ -103,7 +91,6 @@ public class Population {
 	
 	public void sort (Comparator compare) {
 		Collections.sort(this.individuals, compare);
-		//Arrays.sort(this.individuals, compare);
 	}
 	
 	public String toString () {

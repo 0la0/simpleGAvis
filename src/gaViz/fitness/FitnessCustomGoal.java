@@ -64,15 +64,7 @@ public class FitnessCustomGoal implements IFitness{
 						return geneFitness;
 					})
 					.sum();
-			/*
-			int individualFitness = Arrays.stream(individual.getGenome())
-					.map(gene -> {
-						int goalState = this.goal[geneIndex.getAndIncrement()];
-						int geneFitness = maxVal - (int) Math.pow(gene - goalState, 2);
-						return geneFitness;
-					})
-					.sum();
-			*/
+			
 			//set raw fitness of the individual in question
 			individual.setRawFitness(individualFitness);
 			

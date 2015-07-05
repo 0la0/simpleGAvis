@@ -14,11 +14,11 @@ public class BinaryStringHelper {
 		String s = Integer.toBinaryString(num);
 		if (s.length() < geneLength){
 			int numZeros = geneLength - s.length();
-			String zeros = "";
+			StringBuilder zeros = new StringBuilder();
 			for (int i = 0; i < numZeros; i++) {
-				zeros += "0";
+				zeros.append("0");
 			}
-			s = zeros + s;
+			s = zeros.toString() + s;
 		}
 		return s;
 	}

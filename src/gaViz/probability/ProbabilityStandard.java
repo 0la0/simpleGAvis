@@ -7,7 +7,6 @@ public class ProbabilityStandard implements IProbability{
 	public void calc(Population p) {
 		
 		double totalPopulationFitness = p.getTotalFitness() * 1.0;
-		//AtomicDouble cumulativeSum = new AtomicDouble(0);
 		CumulativeSum cumulative = new CumulativeSum();
 		
 		p.getIndividuals().stream().forEach(individual -> {
