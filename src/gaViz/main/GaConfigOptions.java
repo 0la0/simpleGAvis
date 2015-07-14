@@ -6,7 +6,7 @@ import gaViz.fitness.IFitness;
 import gaViz.breed.IBreeder;
 
 
-public class Options {
+public class GaConfigOptions {
 	
 	public int numGenes;
 	public int populationSize;

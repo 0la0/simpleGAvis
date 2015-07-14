@@ -23,14 +23,14 @@ import javax.swing.Timer;
 import gaViz.fitness.FitnessCustomGoal;
 import gaViz.main.BinaryStringHelper;
 import gaViz.main.Individual;
-import gaViz.main.Options;
+import gaViz.main.GaConfigOptions;
 import gaViz.main.Population;
 import gaViz.main.PopulationComparator;
 
 
 public class AnimationDriver {
 
-	private Options options;
+	private GaConfigOptions options;
 	private int goal;
 	private AnimationPanel animationPanel;
 	private Population parent; 
@@ -50,7 +50,7 @@ public class AnimationDriver {
 	private int prevHeight = 500;//---dimension of JFrame
 	private boolean renderGoal = true;
 	
-	public AnimationDriver (Options options) {
+	public AnimationDriver (GaConfigOptions options) {
 		this.options = options;
 		this.goal = (int) Math.pow(2, this.options.geneLength);
 		

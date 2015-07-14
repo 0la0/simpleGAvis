@@ -46,7 +46,7 @@ public class Basic3dDriver {
 	private double mouseDeltaX;
 	private double mouseDeltaY;
 	
-	private Options options;
+	private GaConfigOptions options;
 	private int goal;
 	private Population parent; 
 	private Population child;
@@ -58,7 +58,7 @@ public class Basic3dDriver {
 	private double totTime = 0;
 	private int cnt = 0;
 	
-	public Basic3dDriver (Options options) {
+	public Basic3dDriver (GaConfigOptions options) {
 		this.options = options;
 		this.goal = (int) Math.pow(2, this.options.geneLength);
 		BinaryStringHelper.setStringLength(this.options.geneLength);

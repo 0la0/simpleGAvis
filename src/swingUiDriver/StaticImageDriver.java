@@ -1,6 +1,6 @@
 package swingUiDriver;
 import gaViz.main.BinaryStringHelper;
-import gaViz.main.Options;
+import gaViz.main.GaConfigOptions;
 import gaViz.main.Population;
 import gaViz.main.PopulationComparator;
 
@@ -18,11 +18,11 @@ import javax.swing.JPanel;
 
 public class StaticImageDriver {
 
-	private Options options;
+	private GaConfigOptions options;
 	private int goal;
 	private ArrayList<Population> generations = new ArrayList<Population>();
 	
-	public StaticImageDriver (Options options) {
+	public StaticImageDriver (GaConfigOptions options) {
 		this.options = options;
 		this.goal = (int) Math.pow(2, this.options.geneLength);
 		BinaryStringHelper.setStringLength(this.options.geneLength);

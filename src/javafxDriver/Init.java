@@ -34,7 +34,7 @@ public class Init extends Application {
 		
 		double[] initialGoalState = new double[]{0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
 		
-		Options options = new Options();
+		GaConfigOptions options = new GaConfigOptions();
 		options.numGenes = 9;
 		options.populationSize = 1000; //---MUST BE EVEN
 		options.geneLength = 8;

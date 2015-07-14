@@ -26,7 +26,7 @@ import gaViz.fitness.*;
 import gaViz.probability.ProbabilityStandard;
 import gaViz.breed.BreedStandard;
 import gaViz.main.BinaryStringHelper;
-import gaViz.main.Options;
+import gaViz.main.GaConfigOptions;
 import gaViz.mutate.MutateStandard;
 
 public class Init {
@@ -294,7 +294,7 @@ public class Init {
 	private void buildOptions (String mainType, int numGenes, int geneLength, int populationSize, int numGenerations, float mutateThresh, String crossoverType, String fitnessType, double[] geneGoals, String printOption) {
 		BinaryStringHelper.setStringLength(geneLength);
 		
-		Options options = new Options();
+		GaConfigOptions options = new GaConfigOptions();
 		options.numGenes = numGenes;
 		if (populationSize % 2 != 0) populationSize++;
 		options.populationSize = populationSize;

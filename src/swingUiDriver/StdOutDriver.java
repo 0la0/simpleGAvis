@@ -7,18 +7,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import gaViz.main.BinaryStringHelper;
-import gaViz.main.Options;
+import gaViz.main.GaConfigOptions;
 import gaViz.main.Population;
 
 
 public class StdOutDriver {
 
-	private Options options;
+	private GaConfigOptions options;
 	private int goal;
 	private IPrint printObj;
 	private JTextArea textArea;
 	
-	public StdOutDriver (Options options, IPrint printObj) {
+	public StdOutDriver (GaConfigOptions options, IPrint printObj) {
 		this.options = options;
 		this.options = options;
 		this.goal = (int) Math.pow(2, this.options.geneLength);
