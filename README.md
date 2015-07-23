@@ -1,5 +1,9 @@
 Simple Genetic Algorithm Visualization Tool
 =================
+![screenshot](screenshots/visuallize-3d-5.png)
+![screenshot](screenshots/visuallize-3d-4.png)
+![screenshot](screenshots/visuallize-2d-animation-0.png)
+![screenshot](screenshots/options-0.png)
 
 A Java program for visualizing an implementation of the "Simple Genetic Algorithm."
 

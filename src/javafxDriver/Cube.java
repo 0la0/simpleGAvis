@@ -19,11 +19,11 @@ public class Cube {
 		this(0, 0, 0);
 	}
 
-	public Cube (int width, int height, int depth) {
+	public Cube (double width, double height, double depth) {
 		this(width, height, depth, Color.RED, Color.RED);
 	}
 
-	public Cube (int width, int height, int depth, Color diffuse, Color specular) {
+	public Cube (double width, double height, double depth, Color diffuse, Color specular) {
 		this.box = new Box(width, height, depth);
 		this.box.getTransforms().addAll(rz, ry, rx);
 		this.setColor(diffuse, specular);
