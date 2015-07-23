@@ -2,21 +2,17 @@ package javafxDriver;
 
 import gaViz.main.*;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
 import javafx.scene.SceneAntialiasing;
-import javafx.stage.Screen;
 
 //"Chromosome" comes from the Greek words khroma meaning "color" and soma meaning "body"!
 public class Basic3dDriver {
@@ -48,8 +44,8 @@ public class Basic3dDriver {
 	
 	private GaConfigOptions options;
 	private int goal;
-	private Population parent; 
-	private Population child;
+	private final int generationsCount = 3;
+	private ArrayDeque<Population> generations = new ArrayDeque<Population>();
 	private long lastTime;
 	private boolean isFrameSkip = false;
 	private int sizeMult = 4;
@@ -79,32 +75,32 @@ public class Basic3dDriver {
 		this.scene.setFill(Color.color(0, 0, 0));
 		this.scene.setCamera(camera);
 		this.handleMouse();
-			
+
 		//---SET UP AND START TIMER---//
 		this.lastTime = System.nanoTime();
 		AnimationTimer timer = new AnimationTimer() {
+			@Override
 			public void handle(long now) {
 				float elapsedTime = (float) ((now - lastTime) / 1000000.0);
 				lastTime = now;
-				if (cnt++ % 2 == 0)
+				//if (cnt++ % 2 == 0)
 					generate(elapsedTime);
 				animateCamera(elapsedTime);
-				/*
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				*/
 			}
 		};
 		timer.start();
 	}
 	
 	public void initPopulation () {
-		this.parent = new Population(this.options.populationSize, this.options.numGenes, this.goal);
-		this.options.fitnessObj.calcFitness(parent);
-		this.options.probabilityObj.calc(parent);
+		for (int g = 0; g < generationsCount; g++)
+			generations.add(new Population(this.options.populationSize, this.options.numGenes, this.goal));
+		this.options.fitnessObj.calcFitness(generations.peekLast());
+		this.options.probabilityObj.calc(generations.peekLast());
 	}
 	
 	private void animateCamera (float elapsedTime) {
@@ -122,69 +118,78 @@ public class Basic3dDriver {
 		
 		
 		//---------BREED NEW GENERATION-------------//
-		child = this.options.breederObj.breed(parent);
+		Population child = this.options.breederObj.breed(generations.peekLast());
 		this.options.crossoverObj.crossover(child);
 		this.options.mutateObj.mutate(child);
 		this.options.fitnessObj.calcFitness(child);
 		this.options.probabilityObj.calc(child);
-		parent = child;	
+		
+		generations.pop(); // "dying" generation
+		generations.add(child); // new gemeration
 		//------------------------------------------//
 		
-		
-		for (int i = 0; i < this.child.getSize(); i++) {
-			Cube cube = particles.get(i);
-			
-			double normalX = this.child.getIndividual(i).getGene(0) / (this.goal * 1.0);
-			double normalY = this.child.getIndividual(i).getGene(1) / (this.goal * 1.0);
-			double normalZ = this.child.getIndividual(i).getGene(2) / (this.goal * 1.0);
-			double normalR = this.child.getIndividual(i).getGene(3) / (this.goal * 1.0);
-			double normalG = this.child.getIndividual(i).getGene(4) / (this.goal * 1.0);
-			double normalB = this.child.getIndividual(i).getGene(5) / (this.goal * 1.0);
-			double normalScaleX = this.child.getIndividual(i).getGene(6) / (this.goal * 1.0);
-			double normalScaleY = this.child.getIndividual(i).getGene(7) / (this.goal * 1.0);
-			double normalScaleZ = this.child.getIndividual(i).getGene(8) / (this.goal * 1.0);
-			//double rx = this.child.getIndividual(i).getGene(9) / (this.goal * 1.0);
-			//double ry = this.child.getIndividual(i).getGene(9) / (this.goal * 1.0);
-			//double rz = this.child.getIndividual(i).getGene(9) / (this.goal * 1.0);
-			
-			int x = (int) Math.floor(1000 * (normalX - 0.5));
-			int y = (int) Math.floor(1000 * (normalY - 0.5));
-			int z = (int) Math.floor(1000 * (normalZ - 0.5));
-			
-			cube.translate(x, y, z);
-			cube.setColor(normalR, normalG, normalB);
-			cube.setScale(normalScaleX * this.sizeMult, normalScaleY * this.sizeMult, normalScaleZ * this.sizeMult);
-			//cube.setRotate(rx * 360, ry * 360, rz * 360);
+		// for each generation of particles
+		int size = child.getSize();
+		int particleStartIndex = 0;
+		for (Population gen : generations) {
+			for (int i = 0; i < size; i++) {
+				Cube cube = particles.get(i + particleStartIndex);
+
+				double normalX = gen.getIndividual(i).getGene(0) / (this.goal * 1.0);
+				double normalY = gen.getIndividual(i).getGene(1) / (this.goal * 1.0);
+				double normalZ = gen.getIndividual(i).getGene(2) / (this.goal * 1.0);
+				double normalR = gen.getIndividual(i).getGene(3) / (this.goal * 1.0);
+				double normalG = gen.getIndividual(i).getGene(4) / (this.goal * 1.0);
+				double normalB = gen.getIndividual(i).getGene(5) / (this.goal * 1.0);
+				double normalScaleX = gen.getIndividual(i).getGene(6) / (this.goal * 1.0);
+				double normalScaleY = gen.getIndividual(i).getGene(7) / (this.goal * 1.0);
+				double normalScaleZ = gen.getIndividual(i).getGene(8) / (this.goal * 1.0);
+				//double rx = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
+				//double ry = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
+				//double rz = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
+
+				int x = (int) Math.floor(1000 * (normalX - 0.5));
+				int y = (int) Math.floor(1000 * (normalY - 0.5));
+				int z = (int) Math.floor(1000 * (normalZ - 0.5));
+
+				cube.translate(x, y, z);
+				cube.setColor(normalR, normalG, normalB);
+				cube.setScale(normalScaleX * this.sizeMult, normalScaleY * this.sizeMult, normalScaleZ * this.sizeMult);
+				//cube.setRotate(rx * 360, ry * 360, rz * 360);
+			}
+			particleStartIndex += size;
 		}
 		
 		//---------------RESET GOAL-----------------//
-		if (Math.random() < 0.005) {
-			double x = Math.random();
-			double y = Math.random();
-			double z = Math.random();
-			double r = Math.random();
-			double g = Math.random();
-			double b = Math.random();
-			double scaleX = Math.random();
-			double scaleY = Math.random();
-			double scaleZ = Math.random();
-			//double rx = Math.random();
-			//double ry = Math.random();
-			//double rz = Math.random();
-			//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
-			this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
-			//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b});
-			//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
-		
-			this.goalCube.translate((x - 0.5) * 1000, (y - 0.5) * 1000, (z - 0.5) * 1000);
-			this.goalCube.setColor(r, g, b);
-			this.goalCube.setScale(scaleX * this.sizeMult, scaleY * this.sizeMult, scaleZ * this.sizeMult);
-			//this.goalCube.setRotate(rx * 360, ry * 360, rz * 360);
-		}
+		if (Math.random() < 0.005) resetGoalCube();
 		
 		//---SCATTER: RANDOM RESTART---//
 		//if (Math.random() < 0.005) this.initPopulation();
 		
+	}
+
+	private void resetGoalCube() {
+		double x = Math.random();
+		double y = Math.random();
+		double z = Math.random();
+		double r = Math.random();
+		double g = Math.random();
+		double b = Math.random();
+		double scaleX = Math.random();
+		double scaleY = Math.random();
+		double scaleZ = Math.random();
+		//double rx = Math.random();
+		//double ry = Math.random();
+		//double rz = Math.random();
+		//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
+		this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
+		//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b});
+		//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
+	
+		this.goalCube.translate((x - 0.5) * 1000, (y - 0.5) * 1000, (z - 0.5) * 1000);
+		this.goalCube.setColor(r, g, b);
+		this.goalCube.setScale(scaleX * this.sizeMult, scaleY * this.sizeMult, scaleZ * this.sizeMult);
+		//this.goalCube.setRotate(rx * 360, ry * 360, rz * 360);
 	}
 
 	private void buildCamera() {
@@ -259,21 +264,23 @@ public class Basic3dDriver {
 	}
 
 	private void buildParticles () {
-		for (Individual individual : parent.getIndividuals()) {
-			Color color = new Color(0.6, 0.2, 0.1, 1);
-			Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
-			
-			double normalX = individual.getGene(0) / (this.goal * 1.0);
-			double normalY = individual.getGene(1) / (this.goal * 1.0);
-			double normalZ = individual.getGene(2) / (this.goal * 1.0);
-			int x = (int) Math.floor(500 * normalX);
-			int y = (int) Math.floor(500 * normalY);
-			int z = (int) Math.floor(500 * normalZ);
-			
-			box.translate(x, y, z);
-			particles.add(box);
+		for(Population gen : generations) {
+			for (Individual individual : gen.getIndividuals()) {
+				Color color = new Color(0.6, 0.2, 0.1, 1);
+				Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
+				
+				double normalX = individual.getGene(0) / (this.goal * 1.0);
+				double normalY = individual.getGene(1) / (this.goal * 1.0);
+				double normalZ = individual.getGene(2) / (this.goal * 1.0);
+				int x = (int) Math.floor(500 * normalX);
+				int y = (int) Math.floor(500 * normalY);
+				int z = (int) Math.floor(500 * normalZ);
+				
+				box.translate(x, y, z);
+				particles.add(box);
+			}
 		}
-		
+
 		for (Cube particle : particles) {
 			this.particleGroup.getChildren().addAll(particle.getBox());
 		}
@@ -288,6 +295,7 @@ public class Basic3dDriver {
 		return this.scene;
 	}
 	
+	@Override
 	public String toString () {
 		return "basic3D";
 	}
