@@ -226,19 +226,15 @@ public class Basic3dDriver {
 
 	//---BUILDS CUBE SKELETON FOR VISUAL SPATIAL REFERENCE---//
 	private void buildBoundries() {
-		PhongMaterial blackMaterial = new PhongMaterial();
-		blackMaterial.setDiffuseColor(Color.BLACK);
-		blackMaterial.setSpecularColor(Color.BLACK);
-
 		double lineWidth = 1.0;
 		ArrayList<Cube> bounds = new ArrayList<Cube>();
 
 		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(size * 2, lineWidth, lineWidth, blackMaterial));
+			bounds.add(new Cube(size * 2, lineWidth, lineWidth, Color.BLACK, Color.BLACK));
 		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(lineWidth, size * 2, lineWidth, blackMaterial));
+			bounds.add(new Cube(lineWidth, size * 2, lineWidth, Color.BLACK, Color.BLACK));
 		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(lineWidth, lineWidth, size * 2, blackMaterial));
+			bounds.add(new Cube(lineWidth, lineWidth, size * 2, Color.BLACK, Color.BLACK));
 
 		bounds.get(0).translate(0, halfSize, halfSize);
 		bounds.get(1).translate(0, halfSize, -halfSize);
