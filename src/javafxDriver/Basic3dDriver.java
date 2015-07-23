@@ -85,12 +85,14 @@ public class Basic3dDriver {
 				lastTime = now;
 				//if (cnt++ % 2 == 0)
 					generate(elapsedTime);
-				animateCamera(elapsedTime);
+				//animateCamera(elapsedTime);
+				/*
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				*/
 			}
 		};
 		timer.start();
@@ -130,10 +132,10 @@ public class Basic3dDriver {
 		
 		// for each generation of particles
 		int size = child.getSize();
-		int particleStartIndex = 0;
+		int genIndex = 0;
 		for (Population gen : generations) {
 			for (int i = 0; i < size; i++) {
-				Cube cube = particles.get(i + particleStartIndex);
+				Cube cube = particles.get(i + genIndex * size);
 
 				double normalX = gen.getIndividual(i).getGene(0) / (this.goal * 1.0);
 				double normalY = gen.getIndividual(i).getGene(1) / (this.goal * 1.0);
@@ -153,11 +155,13 @@ public class Basic3dDriver {
 				int z = (int) Math.floor(1000 * (normalZ - 0.5));
 
 				cube.translate(x, y, z);
-				cube.setColor(normalR, normalG, normalB);
+				// opacity based on age, the dying are dissipating
+				double opacity = ((double) generationsCount - genIndex) / generationsCount;
+				cube.setColor(normalR, normalG, normalB, opacity);
 				cube.setScale(normalScaleX * this.sizeMult, normalScaleY * this.sizeMult, normalScaleZ * this.sizeMult);
 				//cube.setRotate(rx * 360, ry * 360, rz * 360);
 			}
-			particleStartIndex += size;
+			genIndex++;
 		}
 		
 		//---------------RESET GOAL-----------------//
@@ -335,7 +339,7 @@ public class Basic3dDriver {
 			mouseDeltaY = (mousePosY - mouseOldY);
 
 			double modifier = 1.0;
-			double modifierFactor = 0.1;
+			double modifierFactor = 0.2;
 
 			if (e.isControlDown()) {
 				modifier = 0.1;
