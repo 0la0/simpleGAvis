@@ -100,4 +100,11 @@ public class Population {
 		return about;
 	}
 	
+	public Population copy () {
+		List<Individual> individualClone = this.individuals.stream()
+				.map(individual -> individual.copy())
+				.collect(Collectors.toList());
+		return new Population(individualClone);
+	}
+	
 }

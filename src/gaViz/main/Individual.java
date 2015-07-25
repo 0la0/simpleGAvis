@@ -2,6 +2,7 @@ package gaViz.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Individual {
 
@@ -105,6 +106,13 @@ public class Individual {
 			sb.append(BinaryStringHelper.intToBinaryString(this.genome.get(i)));
 		}
 		return sb.toString();
+	}
+	
+	public Individual copy () {
+		List<Integer> geneClone = this.genome.stream()
+				.map(gene -> gene)
+				.collect(Collectors.toList());
+		return new Individual(geneClone);
 	}
 	
 }
