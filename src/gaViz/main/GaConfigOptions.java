@@ -12,6 +12,7 @@ public class GaConfigOptions {
 	public int populationSize;
 	public int numGenerations;
 	public int geneLength;
+	public int numGensToSave;
 	public IMutate mutateObj;
 	public IFitness fitnessObj;
 	public ICrossover crossoverObj;

@@ -32,19 +32,22 @@ public class Init extends Application {
 		stage.setScene(scene);
 		stage.setTitle("Genetic Algorithm 3D Visualization");
 		
-		double[] initialGoalState = new double[]{0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
+		double[] initialGoalState = new double[]{0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
 		
 		GaConfigOptions options = new GaConfigOptions();
 		options.numGenes = 9;
 		options.populationSize = 1000; //---MUST BE EVEN
 		options.geneLength = 8;
+		options.numGensToSave = 1;
 		options.mutateObj = new MutateStandard(0.0005f);
 		options.breederObj = new BreedStandard();
 		options.probabilityObj = new ProbabilityStandard();
 		options.crossoverObj = new CrossoverGenenome();
 		options.fitnessObj = new FitnessCustomGoal(initialGoalState);
+		//options.concurrentGenCnt
 		
-		driverThree = new Basic3dDriver(options);
+		GaGenerator gaGenerator = new GaGenerator(options);
+		driverThree = new Basic3dDriver(options, gaGenerator);
 		mainGraphicsPane.getChildren().add(driverThree.getUiNode());
 		//mainGraphicsPane.add(driverThree.getUiNode());
 		
@@ -54,7 +57,7 @@ public class Init extends Application {
 		
 		scene.setOnKeyPressed((KeyEvent e) -> {
 			if (e.getCode() == KeyCode.S)
-				driverThree.initPopulation();
+				gaGenerator.randomRestart();
 			else if (e.getCode() == KeyCode.SPACE || e.getCode() == KeyCode.ESCAPE) {
 				isFullscreen = !isFullscreen;
 				stage.setFullScreen(isFullscreen);

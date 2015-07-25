@@ -2,8 +2,9 @@ package javafxDriver;
 
 import gaViz.main.*;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -18,7 +19,7 @@ import javafx.scene.SceneAntialiasing;
 public class Basic3dDriver {
 
 	private Group root = new Group();
-	private Group boundryGroup = new Group();
+	//private Group boundryGroup = new Group();
 	private Xform world = new Xform();
 	private PerspectiveCamera camera = new PerspectiveCamera(true);
 	private Xform cameraXform = new Xform();
@@ -43,26 +44,33 @@ public class Basic3dDriver {
 	private double mouseDeltaY;
 	
 	private GaConfigOptions options;
+	private GaGenerator gaGenerator;
 	private int goal;
-	private final int generationsCount = 3;
-	private ArrayDeque<Population> generations = new ArrayDeque<Population>();
+	//private final int generationsCount = 3;
+	//private ArrayDeque<Population> generations = new ArrayDeque<Population>();
 	private long lastTime;
-	private boolean isFrameSkip = false;
+	//private boolean isFrameSkip = false;
 	private int sizeMult = 4;
 	private int width = 900;
 	private int height = 675;
-	private double totTime = 0;
-	private int cnt = 0;
+	//private double totTime = 0;
+	//private int cnt = 0;
 	
-	public Basic3dDriver (GaConfigOptions options) {
+	public Basic3dDriver (GaConfigOptions options, GaGenerator gaGenerator) {
 		this.options = options;
-		this.goal = (int) Math.pow(2, this.options.geneLength);
-		BinaryStringHelper.setStringLength(this.options.geneLength);
+		//this.gaGenerator = new GaGenerator(options);
+		this.gaGenerator = gaGenerator;
+		this.goal = gaGenerator.getGoalSize();
+		//---should be in other file
+		//this.options = options;
+		//this.goal = (int) Math.pow(2, this.options.geneLength);
+		//BinaryStringHelper.setStringLength(this.options.geneLength);
+		//---
 		
 		this.buildGoalCube();
-		this.initPopulation();
+		//this.initPopulation();
 		this.buildParticles();
-		this.generate(0);
+		//this.generate(0); //init should be in other file
 		
 		
 		//---UI SETUP---//
@@ -83,27 +91,24 @@ public class Basic3dDriver {
 			public void handle(long now) {
 				float elapsedTime = (float) ((now - lastTime) / 1000000.0);
 				lastTime = now;
-				//if (cnt++ % 2 == 0)
+				//TODO: figure out javaFx timing!
+				//if (cnt++ % 2 == 0) {
+					gaGenerator.createNewPopulation();
 					generate(elapsedTime);
-				//animateCamera(elapsedTime);
-				/*
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				*/
+					animateCamera(elapsedTime);
+				//}
 			}
 		};
 		timer.start();
 	}
-	
+	/*
 	public void initPopulation () {
 		for (int g = 0; g < generationsCount; g++)
 			generations.add(new Population(this.options.populationSize, this.options.numGenes, this.goal));
 		this.options.fitnessObj.calcFitness(generations.peekLast());
 		this.options.probabilityObj.calc(generations.peekLast());
 	}
+	*/
 	
 	private void animateCamera (float elapsedTime) {
 		//this.totTime += elapsedTime * 0.0001;
@@ -115,87 +120,63 @@ public class Basic3dDriver {
 	
 	private void generate (float elapsedTime) {
 		//long startTime = System.nanoTime();
-		this.isFrameSkip = !this.isFrameSkip;
-		if (this.isFrameSkip) return;
+		//this.isFrameSkip = !this.isFrameSkip;
+		//if (this.isFrameSkip) return;
 		
 		
 		//---------BREED NEW GENERATION-------------//
-		Population child = this.options.breederObj.breed(generations.peekLast());
-		this.options.crossoverObj.crossover(child);
-		this.options.mutateObj.mutate(child);
-		this.options.fitnessObj.calcFitness(child);
-		this.options.probabilityObj.calc(child);
-		
-		generations.pop(); // "dying" generation
-		generations.add(child); // new gemeration
+//		Population child = this.options.breederObj.breed(generations.peekLast());
+//		this.options.crossoverObj.crossover(child);
+//		this.options.mutateObj.mutate(child);
+//		this.options.fitnessObj.calcFitness(child);
+//		this.options.probabilityObj.calc(child);
+//		
+//		generations.pop(); // "dying" generation
+//		generations.add(child); // new gemeration
 		//------------------------------------------//
 		
+		
+		
 		// for each generation of particles
-		int size = child.getSize();
-		int genIndex = 0;
-		for (Population gen : generations) {
-			for (int i = 0; i < size; i++) {
-				Cube cube = particles.get(i + genIndex * size);
-
-				double normalX = gen.getIndividual(i).getGene(0) / (this.goal * 1.0);
-				double normalY = gen.getIndividual(i).getGene(1) / (this.goal * 1.0);
-				double normalZ = gen.getIndividual(i).getGene(2) / (this.goal * 1.0);
-				double normalR = gen.getIndividual(i).getGene(3) / (this.goal * 1.0);
-				double normalG = gen.getIndividual(i).getGene(4) / (this.goal * 1.0);
-				double normalB = gen.getIndividual(i).getGene(5) / (this.goal * 1.0);
-				double normalScaleX = gen.getIndividual(i).getGene(6) / (this.goal * 1.0);
-				double normalScaleY = gen.getIndividual(i).getGene(7) / (this.goal * 1.0);
-				double normalScaleZ = gen.getIndividual(i).getGene(8) / (this.goal * 1.0);
-				//double rx = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
-				//double ry = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
-				//double rz = gen.getIndividual(i).getGene(9) / (this.goal * 1.0);
-
-				int x = (int) Math.floor(1000 * (normalX - 0.5));
-				int y = (int) Math.floor(1000 * (normalY - 0.5));
-				int z = (int) Math.floor(1000 * (normalZ - 0.5));
-
-				cube.translate(x, y, z);
-				// opacity based on age, the dying are dissipating
-				double opacity = ((double) generationsCount - genIndex) / generationsCount;
-				cube.setColor(normalR, normalG, normalB, opacity);
-				cube.setScale(normalScaleX * this.sizeMult, normalScaleY * this.sizeMult, normalScaleZ * this.sizeMult);
-				//cube.setRotate(rx * 360, ry * 360, rz * 360);
-			}
-			genIndex++;
-		}
+		//int size = child.getSize();
+		//int genIndex = 0;
+		AtomicInteger indexCnt = new AtomicInteger(0);
+		//for (Population gen : generations) {
+		
+			Population renderPopulation = this.gaGenerator.getLatestPopulation();
+			
+			renderPopulation.getIndividuals().forEach(individual -> {
+				Cube cube = particles.get(indexCnt.getAndIncrement());
+				renderIndividual(individual, cube);
+			});
+			
 		
 		//---------------RESET GOAL-----------------//
-		if (Math.random() < 0.005) resetGoalCube();
-		
-		//---SCATTER: RANDOM RESTART---//
-		//if (Math.random() < 0.005) this.initPopulation();
-		
+		if (Math.random() < 0.005) {
+			double[] newGoal = new Random().doubles(this.options.numGenes).toArray();
+			this.options.fitnessObj.setGoal(newGoal);
+		}
 	}
-
-	private void resetGoalCube() {
-		double x = Math.random();
-		double y = Math.random();
-		double z = Math.random();
-		double r = Math.random();
-		double g = Math.random();
-		double b = Math.random();
-		double scaleX = Math.random();
-		double scaleY = Math.random();
-		double scaleZ = Math.random();
-		//double rx = Math.random();
-		//double ry = Math.random();
-		//double rz = Math.random();
-		//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ, rx, ry, rz});
-		this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b, scaleX, scaleY, scaleZ});
-		//this.options.fitnessObj.setGoal(new double[]{x, y, z, r, g, b});
-		//System.out.println("Goal state set to: " + x + ", " + y + ", " + z);
 	
-		this.goalCube.translate((x - 0.5) * 1000, (y - 0.5) * 1000, (z - 0.5) * 1000);
-		this.goalCube.setColor(r, g, b);
-		this.goalCube.setScale(scaleX * this.sizeMult, scaleY * this.sizeMult, scaleZ * this.sizeMult);
-		//this.goalCube.setRotate(rx * 360, ry * 360, rz * 360);
+	private void renderIndividual (Individual individual, Cube cube) {
+		double[] normalValues = individual.getGenome().stream()
+				.mapToDouble(gene ->  gene / (goal * 1.0))
+				.toArray();
+
+		int x = (int) Math.floor(1000 * (normalValues[0] - 0.5));
+		int y = (int) Math.floor(1000 * (normalValues[1] - 0.5));
+		int z = (int) Math.floor(1000 * (normalValues[2] - 0.5));
+
+		cube.translate(x, y, z);
+		// opacity based on age, the dying are dissipating
+		//double opacity = ((double) generationsCount - genIndex) / generationsCount;
+		cube.setColor(normalValues[3], normalValues[4], normalValues[5]);
+		//cube.setColor(normalValues[3], normalValues[4], normalValues[5], opacity);
+		cube.setScale(normalValues[6] * this.sizeMult, normalValues[7] * this.sizeMult, normalValues[8] * this.sizeMult);
+		//cube.setRotate(normalValues[9] * 360, normalValues[10] * 360, normalValues[11] * 360);
 	}
 
+	
 	private void buildCamera() {
 		root.getChildren().add(cameraXform);
 		cameraXform.getChildren().add(cameraXform2);
@@ -233,43 +214,12 @@ public class Basic3dDriver {
 		//this.boundryGroup.getChildren().add(this.goalCube.getBox());
 	}
 
-	//---BUILDS CUBE SKELETON FOR VISUAL SPATIAL REFERENCE---//
-	private void buildBoundries() {
-		double lineWidth = 1.0;
-		ArrayList<Cube> bounds = new ArrayList<Cube>();
-
-		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(size * 2, lineWidth, lineWidth, Color.BLACK, Color.BLACK));
-		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(lineWidth, size * 2, lineWidth, Color.BLACK, Color.BLACK));
-		for (int i = 0; i < 4; i++)
-			bounds.add(new Cube(lineWidth, lineWidth, size * 2, Color.BLACK, Color.BLACK));
-
-		bounds.get(0).translate(0, halfSize, halfSize);
-		bounds.get(1).translate(0, halfSize, -halfSize);
-		bounds.get(2).translate(0, -halfSize, halfSize);
-		bounds.get(3).translate(0, -halfSize, -halfSize);
-
-		bounds.get(4).translate(halfSize, 0, halfSize);
-		bounds.get(5).translate(halfSize, 0, -halfSize);
-		bounds.get(6).translate(-halfSize, 0, halfSize);
-		bounds.get(7).translate(-halfSize, 0, -halfSize);
-
-		bounds.get(8).translate(halfSize, halfSize, 0);
-		bounds.get(9).translate(halfSize, -halfSize, 0);
-		bounds.get(10).translate(-halfSize, halfSize, 0);
-		bounds.get(11).translate(-halfSize, -halfSize, 0);
-
-		for (Cube bound : bounds) {
-			boundryGroup.getChildren().add(bound.getBox());
-		}
-		//boundryGroup.getChildren().add(this.goalCube.getBox());
-		world.getChildren().addAll(boundryGroup);
-	}
-
 	private void buildParticles () {
-		for(Population gen : generations) {
-			for (Individual individual : gen.getIndividuals()) {
+		//for(Population gen : generations) {
+			Population pop = this.gaGenerator.getLatestPopulation();
+			System.out.println("popSize: " + pop.getSize());
+			System.out.println("individualLength: " + pop.getIndividuals().size());
+			for ( Individual individual : pop.getIndividuals() ) {
 				Color color = new Color(0.6, 0.2, 0.1, 1);
 				Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
 				
@@ -283,17 +233,19 @@ public class Basic3dDriver {
 				box.translate(x, y, z);
 				particles.add(box);
 			}
-		}
+		//}
 
 		for (Cube particle : particles) {
 			this.particleGroup.getChildren().addAll(particle.getBox());
 		}
 		this.world.getChildren().addAll(this.particleGroup);
+		System.out.println("particles length: " + particles.size());
 	}
-	
+	/*
 	private int getPosNeg () {
 		return (Math.random() < 0.5) ? 1 : -1;
 	}
+	*/
 	
 	public Node getUiNode () {
 		return this.scene;
