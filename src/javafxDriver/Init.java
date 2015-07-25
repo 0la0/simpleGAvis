@@ -38,7 +38,7 @@ public class Init extends Application {
 		options.numGenes = 9;
 		options.populationSize = 1000; //---MUST BE EVEN
 		options.geneLength = 8;
-		options.numGensToSave = 1;
+		options.numGensToSave = 3;
 		options.mutateObj = new MutateStandard(0.0005f);
 		options.breederObj = new BreedStandard();
 		options.probabilityObj = new ProbabilityStandard();

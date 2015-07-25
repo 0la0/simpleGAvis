@@ -8,7 +8,7 @@ public class GaGenerator {
 	public GaGenerator (GaConfigOptions options) {
 		this.options = options;
 		BinaryStringHelper.setStringLength(this.options.geneLength);
-		this.generations = new Generations(options.numGenerations);
+		this.generations = new Generations(options.numGensToSave);
 		
 		this.randomRestart();
 		//this.createNewPopulation(); //necessary???

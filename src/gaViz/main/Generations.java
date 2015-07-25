@@ -4,19 +4,15 @@ import java.util.ArrayDeque;
 
 public class Generations {
 
-	private int size;
+	private int sizeLimit;
 	private ArrayDeque<Population> populations = new ArrayDeque<Population>();
 	
-	public Generations (int size) {
-		this.size = size;
-	}
-	
-	public int size () {
-		return this.size;
+	public Generations (int sizeLimit) {
+		this.sizeLimit = sizeLimit;
 	}
 	
 	public void add (Population p) {
-		if (this.populations.size() >= this.size && this.populations.peekLast() != null) {
+		if (this.populations.size() >= this.sizeLimit && this.populations.peekLast() != null) {
 			this.populations.removeFirst();
 		}
 		this.populations.add(p);

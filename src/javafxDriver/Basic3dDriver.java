@@ -82,23 +82,17 @@ public class Basic3dDriver {
 	}
 	
 	private void generate (float elapsedTime) {
-	
 		
-		// for each generation of particles
-		//int size = child.getSize();
-		//int genIndex = 0;
 		AtomicInteger indexCnt = new AtomicInteger(0);
-		//for (Population gen : generations) {
-		
-		Population renderPopulation = this.gaGenerator.getLatestPopulation();
-		
-		renderPopulation.getIndividuals().forEach(individual -> {
-			Cube cube = particles.get(indexCnt.getAndIncrement());
-			renderIndividual(individual, cube);
-		});
+		gaGenerator.getGenerations().getPopulations().forEach(population -> {
 			
+			population.getIndividuals().forEach(individual -> {
+				Cube cube = particles.get(indexCnt.getAndIncrement());
+				renderIndividual(individual, cube);
+			});
+			
+		});
 		
-		//---------------RESET GOAL-----------------//
 		if (Math.random() < 0.005) resetGoal();
 	}
 	
@@ -147,27 +141,19 @@ public class Basic3dDriver {
 	}
 
 	private void buildParticles () {
-		//for(Population gen : generations) {
-			Population pop = this.gaGenerator.getLatestPopulation();
-			for ( Individual individual : pop.getIndividuals() ) {
-				Color color = new Color(0.6, 0.2, 0.1, 1);
-				Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
-				
-				double normalX = individual.getGene(0) / (this.goal * 1.0);
-				double normalY = individual.getGene(1) / (this.goal * 1.0);
-				double normalZ = individual.getGene(2) / (this.goal * 1.0);
-				int x = (int) Math.floor(500 * normalX);
-				int y = (int) Math.floor(500 * normalY);
-				int z = (int) Math.floor(500 * normalZ);
-				
-				box.translate(x, y, z);
-				particles.add(box);
-			}
-		//}
-
-		for (Cube particle : particles) {
-			this.particleGroup.getChildren().addAll(particle.getBox());
+		int numParticles = options.populationSize * options.numGensToSave;
+		for (int i = 0; i < numParticles; i++) {
+			Color color = new Color(0.6, 0.2, 0.1, 1);
+			Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
+			int x = (int) Math.floor(500 * Math.random());
+			int y = (int) Math.floor(500 * Math.random());
+			int z = (int) Math.floor(500 * Math.random());
+			box.translate(x, y, z);
+			particles.add(box);
 		}
+		particles.forEach(particle -> {
+			particleGroup.getChildren().add(particle.getBox());
+		});
 		this.world.getChildren().addAll(this.particleGroup);
 	}
 	
