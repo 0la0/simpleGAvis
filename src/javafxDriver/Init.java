@@ -44,12 +44,11 @@ public class Init extends Application {
 		options.probabilityObj = new ProbabilityStandard();
 		options.crossoverObj = new CrossoverGenenome();
 		options.fitnessObj = new FitnessCustomGoal(initialGoalState);
-		//options.concurrentGenCnt
 		
 		GaGenerator gaGenerator = new GaGenerator(options);
 		driverThree = new Basic3dDriver(options, gaGenerator);
 		mainGraphicsPane.getChildren().add(driverThree.getUiNode());
-		//mainGraphicsPane.add(driverThree.getUiNode());
+		
 		
 		scene.setRoot(this.mainGraphicsPane);
 		

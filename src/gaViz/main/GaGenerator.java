@@ -11,7 +11,7 @@ public class GaGenerator {
 		this.generations = new Generations(options.numGenerations);
 		
 		this.randomRestart();
-		this.createNewPopulation(); //necessary???
+		//this.createNewPopulation(); //necessary???
 	}
 	
 	
