@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +24,7 @@ import javax.swing.Timer;
 
 import gaViz.fitness.FitnessCustomGoal;
 import gaViz.main.BinaryStringHelper;
+import gaViz.main.GaGenerator;
 import gaViz.main.Individual;
 import gaViz.main.GaConfigOptions;
 import gaViz.main.Population;
@@ -33,8 +36,6 @@ public class AnimationDriver {
 	private GaConfigOptions options;
 	private int goal;
 	private AnimationPanel animationPanel;
-	private Population parent; 
-	private Population child;
 	private Timer timer;
 	private int timerCnt = 1;
 	private BufferedImage img = null;
@@ -49,55 +50,36 @@ public class AnimationDriver {
 	private int prevWidth = 500; //---dimension of JFrame
 	private int prevHeight = 500;//---dimension of JFrame
 	private boolean renderGoal = true;
+	private GaGenerator gaGenerator;
 	
 	public AnimationDriver (GaConfigOptions options) {
 		this.options = options;
-		this.goal = (int) Math.pow(2, this.options.geneLength);
+		this.gaGenerator = new GaGenerator(options);
+		this.goal = this.gaGenerator.getGoalSize();
 		
 		if (this.options.fitnessObj instanceof FitnessCustomGoal) {
 			this.isCustomGoal = true;
 		}
 		
 		this.buildAnimationFrame(500, 500);
-		this.initPopulation();
-		this.generate();
 		
 		this.timer = new Timer(animationStepTime, new ActionListener() {
 	        public void actionPerformed(ActionEvent evt) {
-	    		generate();
+	    		gaGenerator.createNewPopulation();
+	        	generate();
 	        }
 	    });
 	    this.timer.start();
 	}
 	
-	
-	private void initPopulation () {
-		parent = new Population(this.options.populationSize, this.options.numGenes, this.goal);
-		this.options.fitnessObj.calcFitness(parent);
-		this.options.probabilityObj.calc(parent);
-	}
-	
 	private void createNewGoal () {
-		double[] nGoal = new double[this.child.getNumGenes()];
-		for (int i = 0; i < nGoal.length; i++) {
-			nGoal[i] = Math.random();
-		}
-		this.options.fitnessObj.setGoal(nGoal);
+		double[] newGoal = new Random().doubles(this.options.numGenes).toArray();
+		this.options.fitnessObj.setGoal(newGoal);
 	}
 	
 	private void generate () {
-		//long startTime = System.nanoTime();
 		
-		//------------------------------------------//
-		child = this.options.breederObj.breed(parent);
-		this.options.crossoverObj.crossover(child);
-		this.options.mutateObj.mutate(child);
-		this.options.fitnessObj.calcFitness(child);
-		this.options.probabilityObj.calc(child);
-		parent = child;	
-		//------------------------------------------//
-		
-		switch (child.getNumGenes()) {
+		switch (this.options.numGenes) {
 		case 2:
 			this.animateXY();
 			break;
@@ -142,7 +124,8 @@ public class AnimationDriver {
 			this.imgGraphics.setPaint(new Color(255, 255, 255, 100));
 		}
 		
-		this.child.getIndividuals().forEach(individual -> {
+		Population renderPopulation = this.gaGenerator.getLatestPopulation();
+		renderPopulation.getIndividuals().forEach(individual -> {
 			double normalX = individual.getGene(0) / (goal * 1.0);
 			double normalY = individual.getGene(1) / (goal * 1.0);
 			
@@ -162,31 +145,27 @@ public class AnimationDriver {
 	private void animateRGBcolumns () {
 		
 		if (this.img == null) {
-			int w = (int) (child.getSize() * 2);
+			int w = (int) (this.options.populationSize * 2);
 			int h = 1;
 			this.img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			this.imgGraphics = this.img.createGraphics();
 		}
 		
-		this.child.sort(this.populationSort);
-		
-		for (int i = 0; i < this.child.getIndividuals().size(); i++) {
-			Individual individual = this.child.getIndividual(i);
-			/*
-			int[] rgb = Arrays.stream(individual.getGenome()).map(gene -> {
-				double normalVal = gene / (this.goal * 1.0);
-				return (int) Math.floor(255 * normalVal);
-			}).toArray();
-			*/
+		Population renderPopulation = this.gaGenerator.getLatestPopulation();
+		renderPopulation.sort(this.populationSort);
+		AtomicInteger indexCnt = new AtomicInteger(0);
+		renderPopulation.getIndividuals().forEach(individual -> {
 			int[] rgb = individual.getGenome().stream().mapToInt(gene -> {
 				double normalVal = gene / (this.goal * 1.0);
 				return (int) Math.floor(255 * normalVal);
 			}).toArray();
 
 			this.imgGraphics.setColor(new Color(rgb[0], rgb[1], rgb[2]));
-			this.imgGraphics.fillRect(i + this.child.getSize(), 0, 1, 1);
-			this.imgGraphics.fillRect(this.child.getSize() - i, 0, 1, 1);
-		}
+			this.imgGraphics.fillRect(indexCnt.get() + renderPopulation.getSize(), 0, 1, 1);
+			this.imgGraphics.fillRect(renderPopulation.getSize() - indexCnt.get(), 0, 1, 1);
+			indexCnt.incrementAndGet();
+		});
+		
 		animationPanel.setBufferedImage(this.img);
 	}
 	
@@ -196,7 +175,7 @@ public class AnimationDriver {
 	private void animateRGBXY () {
 		int w = BinaryStringHelper.maxVal;
 		int h = BinaryStringHelper.maxVal;
-		int opacityMult = 20;
+		//int opacityMult = 20;
 		if (this.img == null) {
 			this.img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			this.imgGraphics = this.img.createGraphics();
@@ -216,22 +195,36 @@ public class AnimationDriver {
 			this.imgGraphics.fillRect(goalPosition[3] - 5, goalPosition[4] - 5, 10, 10);
 			//opacityMult = 20;
 		}
-		
-		this.child.getIndividuals().stream().forEach(individual -> {
-			double[] normalVals = individual.getGenome().stream().mapToDouble(gene -> {
-				return gene / (this.goal * 1.0);
-			}).toArray();
+
+		AtomicInteger indexCnt = new AtomicInteger(0);
+		this.gaGenerator.getGenerations().getPopulations().forEach(population -> {
 			
-			int red = (int) Math.floor(255 * normalVals[0]);
-			int green = (int) Math.floor(255 * normalVals[1]);
-			int blue = (int) Math.floor(255 * normalVals[2]);
-			int x = (int) Math.floor(w * normalVals[3]);
-			int y = (int) Math.floor(h * normalVals[4]);
+			//int opacity = (10 * opacityMult) / indexCnt.incrementAndGet();
+			int opacity = getOpacity(indexCnt.getAndIncrement());
+			population.getIndividuals().stream().forEach(individual -> {
+				
+				double[] normalVals = individual.getGenome().stream().mapToDouble(gene -> {
+					return gene / (this.goal * 1.0);
+				}).toArray();
+				
+				int red = (int) Math.floor(255 * normalVals[0]);
+				int green = (int) Math.floor(255 * normalVals[1]);
+				int blue = (int) Math.floor(255 * normalVals[2]);
+				int x = (int) Math.floor(w * normalVals[3]);
+				int y = (int) Math.floor(h * normalVals[4]);
+				
+				
+				this.imgGraphics.setPaint(new Color(red, green, blue, opacity));
+				this.imgGraphics.fillRect(x, y, 2, 2);
+				
+			});
 			
-			this.imgGraphics.setPaint(new Color(red, green, blue, 10 * opacityMult));
-			this.imgGraphics.fillRect(x, y, 2, 2);
 		});
 		animationPanel.setBufferedImage(this.img);
+	}
+	
+	private int getOpacity (int index) {
+		return 220 / (this.options.numGenerations - index);
 	}
 	
 	private void buildAnimationFrame (int w, int h) {
@@ -272,7 +265,7 @@ public class AnimationDriver {
         			toggleFullscreen();
         		}
         		else if (arg0.getKeyCode() == KeyEvent.VK_S) {
-        			initPopulation();
+        			gaGenerator.randomRestart();
         		}
         		else if (arg0.getKeyCode() == KeyEvent.VK_G) {
         			renderGoal = !renderGoal;

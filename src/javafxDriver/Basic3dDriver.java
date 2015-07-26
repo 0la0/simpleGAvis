@@ -141,7 +141,7 @@ public class Basic3dDriver {
 	}
 
 	private void buildParticles () {
-		int numParticles = options.populationSize * options.numGensToSave;
+		int numParticles = options.populationSize * options.numGenerations;
 		for (int i = 0; i < numParticles; i++) {
 			Color color = new Color(0.6, 0.2, 0.1, 1);
 			Cube box = new Cube(this.particleSize, this.particleSize, this.particleSize, color, color);
