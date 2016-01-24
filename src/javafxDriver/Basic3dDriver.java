@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
@@ -62,6 +63,13 @@ public class Basic3dDriver {
 		this.scene.setFill(Color.color(0, 0, 0));
 		this.scene.setCamera(camera);
 		this.handleMouse();
+		
+		//---ADD LIGHTING---//
+//		AmbientLight light = new AmbientLight();
+//	    light.setColor(Color.WHITE);
+//	    Group lightGroup = new Group();
+//	    lightGroup.getChildren().add(light);
+//	    root.getChildren().add(lightGroup);
 
 		//---SET UP AND START TIMER---//
 		this.lastTime = System.nanoTime();
